@@ -5,10 +5,10 @@ Publishes the four ITSM reports at https://itsmreport.adu.ac.ae so anyone with t
 | Address | Report |
 |---|---|
 | itsmreport.adu.ac.ae | Landing page with links to all reports |
-| /executive | IT Service Performance Executive Summary (all tickets) |
-| /erp | ERP Support Ticket Report, with ERP change requests |
-| /app-support | Application Support Ticket Report (L2 Application, Abu Dhabi University) |
-| /liwa | Liwa University Ticket Report |
+| /executive | Executive Report (all tickets) |
+| /erp | ERP Report, with ERP change requests |
+| /app-support | Application Report (L2 Application, Abu Dhabi University) |
+| /liwa | Liwa University Report |
 
 ## How it works
 Every 5 minutes GitHub reads all tickets and changes from the Nema helpdesk (ServiceDesk Plus) with its own read-only API key, splits them per report, and republishes the site. If the pull is incomplete nothing is published, so the totals always tally.

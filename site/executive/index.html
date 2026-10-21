@@ -1,0 +1,286 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>NEMA IT Service Executive Summary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one-page CIO summary. Header band, period switch, headline closure rate + KPI strip, affiliate + trend, service lines, points for attention. No ticket register. */
+:root{
+  --bg:#f6f7f8; --surface:#ffffff; --fg:#1e1e1e; --muted:#5b6670; --line:#dde6eb;
+  --accent:#185a7d; --accent-soft:#e3edf2; --gold:#ffcb4f; --band:#185a7d; --band-deep:#123f58;
+  --good:#2f7d52; --good-soft:#e2f2e8; --warn:#c27c0e; --warn-soft:#fbf0dc; --bad:#b42318; --bad-soft:#fbe6e4; --hold:#4d86a0; --cancel:#8b949a;
+  --sans:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1820; --surface:#14232e; --fg:#e8eef1; --muted:#9aabb6; --line:#24384a;
+  --accent:#7fb3cf; --accent-soft:#1b3646; --gold:#ffcb4f; --band:#14496a; --band-deep:#0e3349;
+  --good:#62c48c; --good-soft:#153323; --warn:#e8a947; --warn-soft:#3a2c12; --bad:#f97066; --bad-soft:#3a1a17; --hold:#8fc0d6; --cancel:#7c878e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1820; --surface:#14232e; --fg:#e8eef1; --muted:#9aabb6; --line:#24384a;
+  --accent:#7fb3cf; --accent-soft:#1b3646; --gold:#ffcb4f; --band:#14496a; --band-deep:#0e3349;
+  --good:#62c48c; --good-soft:#153323; --warn:#e8a947; --warn-soft:#3a2c12; --bad:#f97066; --bad-soft:#3a1a17; --hold:#8fc0d6; --cancel:#7c878e; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:14px/1.5 var(--sans)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:16px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;background:linear-gradient(120deg,var(--band-deep),var(--band));color:#fff;border-bottom:4px solid var(--gold);border-radius:8px;padding:18px 22px 16px}
+.eyebrow{font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+h1{margin:2px 0 0;font-size:clamp(21px,3.2vw,28px);font-weight:700;text-wrap:balance}
+h1 span{color:var(--gold);font-weight:400}
+.asof{font-size:12px;color:#d6e3ea;text-align:right}
+.live{display:inline-block;margin-top:4px;font:600 11px var(--sans);letter-spacing:.04em;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff}
+.live.on{background:rgba(98,196,140,.22);color:#bff0d3} .live.warn{background:rgba(255,203,79,.22);color:var(--gold)}
+.live.on::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:5px;vertical-align:1px}
+button{font:600 13px var(--sans);cursor:pointer;border:0;border-radius:6px}
+button.mini{background:var(--gold);color:#1e1e1e;padding:2px 8px;font-size:11px;margin-left:4px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.banner{background:var(--warn-soft);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.banner button{background:var(--accent-soft);color:var(--accent);padding:6px 10px}
+.bar-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.period{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px}
+.period button{background:transparent;color:var(--muted);padding:7px 14px}
+.period button[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:inset 0 -3px 0 var(--gold)}
+.recon{font-size:12px;color:var(--muted)} .recon.ok{color:var(--good)} .recon.bad{color:var(--bad);font-weight:700}
+/* headline */
+.head{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+@media (max-width:820px){.head{grid-template-columns:1fr}}
+.strip{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tiles{grid-template-columns:repeat(6,1fr)!important}
+@media (max-width:900px){.tiles{grid-template-columns:repeat(3,1fr)!important}}
+.big.plain{color:var(--accent)} .big .unit{font-size:16px;font-weight:700;color:var(--muted)}
+.hero{background:var(--surface);padding:18px 20px;display:grid;gap:8px;align-content:center}
+.lab{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.big{font:700 46px/1 var(--sans);font-variant-numeric:tabular-nums}
+.big.good{color:var(--good)} .big.warn{color:var(--warn)} .big.bad{color:var(--bad)}
+.gauge{position:relative;height:10px;border-radius:5px;background:var(--line)}
+.gauge b{display:block;height:100%;border-radius:5px}
+.gauge i{position:absolute;top:-4px;width:2px;height:18px;background:var(--fg)}
+.hero .s{font-size:12.5px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);padding:14px 12px;display:grid;gap:4px;align-content:start;text-align:center}
+.tile .v{font:700 28px/1.1 var(--sans);font-variant-numeric:tabular-nums}
+.tile .s{font-size:12px;color:var(--muted)}
+.tile.g .v{color:var(--good)} .tile.w .v{color:var(--warn)} .tile.h .v{color:var(--hold)} .tile.c .v{color:var(--cancel)} .tile.r .v{color:var(--bad)}
+.grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0;display:grid;gap:10px;align-content:start}
+h2{margin:0;font-size:15px;font-weight:700;color:var(--accent)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);text-align:left;padding:7px 8px;border-bottom:2px solid var(--accent);white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:700;border-top:2px solid var(--accent);border-bottom:0}
+.sub{font-size:11.5px;color:var(--muted);font-weight:400}
+.rate{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:150px}
+.rate .gauge{flex:1;height:7px;min-width:70px}
+.rate .gauge i{top:-3px;height:13px;width:2px}
+.rate span{font-weight:700;font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.rate span.good{color:var(--good)} .rate span.warn{color:var(--warn)} .rate span.bad{color:var(--bad)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.chart svg{display:block;width:100%;height:auto}
+ul.pts{margin:0;padding-left:0;list-style:none;display:grid;gap:8px}
+ul.pts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:13.5px}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:6px}
+.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
+.note{font-size:12px;color:var(--muted);margin:0}
+.muted{color:var(--muted)} td span.good{color:var(--good)} td span.warn{color:var(--warn)} td span.bad{color:var(--bad)}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">NEMA Shared IT Services · Nema helpdesk</div>
+    <h1>IT Service Performance <span>Executive Summary</span></h1>
+  </div>
+  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live · refreshes every 5 min</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
+</header>
+<div id="banner" class="banner" hidden></div>
+
+<div class="bar-row">
+  <div class="period" id="period" role="group" aria-label="Reporting period"></div>
+  <span class="recon" id="recon" role="status"></span>
+</div>
+
+<section class="head">
+  <div class="hero">
+    <span class="lab">Ticket closure rate</span>
+    <span class="big" id="rateBig">–</span>
+    <div class="gauge" id="rateGauge"><b></b><i title="Target 90%"></i></div>
+    <span class="s" id="rateSub"></span>
+  </div>
+  <div class="hero">
+    <span class="lab">First call resolution (L1)</span>
+    <span class="big" id="fcrBig">–</span>
+    <div class="gauge" id="fcrGauge"><b></b><i title="Target 60%"></i></div>
+    <span class="s" id="fcrSub"></span>
+  </div>
+  <div class="hero">
+    <span class="lab">Mean time to resolve (MTTR)</span>
+    <span class="big plain" id="mttrBig">–</span>
+    <span class="s" id="mttrSub"></span>
+  </div>
+</section>
+<section class="strip"><div class="tiles" id="tiles"></div></section>
+
+<div class="grid2">
+  <section class="panel">
+    <h2>By Affiliate</h2>
+    <div class="scroll"><table id="affTable"></table></div>
+  </section>
+  <section class="panel">
+    <h2>Monthly Trend</h2>
+    <div class="legend"><span><i style="background:var(--good)"></i>Closed / Resolved</span><span><i style="background:var(--warn)"></i>Open / On Hold</span><span><i style="background:var(--cancel)"></i>Cancelled</span><span>Figure above bar: closure rate</span></div>
+    <div class="chart" id="chart"></div>
+  </section>
+</div>
+
+<div class="grid2">
+  <section class="panel">
+    <h2>By Service Line</h2>
+    <div class="scroll"><table id="svcTable"></table></div>
+  </section>
+  <section class="panel">
+    <h2>Points for Attention</h2>
+    <ul class="pts" id="pts"></ul>
+  </section>
+</div>
+
+<p class="note">All tickets in the Nema helpdesk instance since go-live (24 August 2026), incidents and service requests together. Ticket closure rate = (closed + resolved) ÷ all tickets raised in the period; target above 90% for AY 2026/27. First call resolution (FCR) = L1 tickets marked first-call resolved ÷ L1 tickets closed or resolved; L1 = Support Abu Dhabi, Support Al Ain and L1 Support groups (ADU, Liwa, ArcLight, Knowledge Group); target 60%. MTTR = average time from ticket logged to closed, for tickets closed in the period, counted in business hours (Monday to Friday, 9 AM – 6 PM UAE time; public holidays not excluded), with clock hours shown alongside. Open backlog = Open + On Hold. NEMA combines NEMA Holding and NEMA Helpdesk accounts. Salesforce notifications are automated system tickets, shown separately. Months are by date raised, UAE time; October is month to date.</p>
+</div>
+
+<script src="data/snap.js"></script>
+<script>
+const TARGET=90,FCR_TARGET=60,TZ=4*3600e3,DAY=864e5;
+const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const pad=n=>String(n).padStart(2,"0");
+const local=ms=>{const d=new Date(ms+TZ);return{y:d.getUTCFullYear(),m:d.getUTCMonth()+1,d:d.getUTCDate(),h:d.getUTCHours(),mi:d.getUTCMinutes()}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>n.toLocaleString("en-US");
+const AFF_ORDER=["Abu Dhabi University","Liwa University","NEMA","ArcLight Services","Knowledge Group","Salesforce Notifications"];
+const affOf=c=>/^nema (helpdesk|holding)$/i.test(c||"")?"NEMA":/^salesforce notification/i.test(c||"")?"Salesforce Notifications":(c||"Not set");
+const SVC=[["Service Desk (L1)",/^(support abu dhabi|support al ain|l1 support|adu-kgc l1 support|adu support abu dhabi|arclight services)$/i],
+  ["Salesforce",/salesforce/i],["ERP",/^erp/i],["Applications (L2)",/^l2 application$/i],["LMS (L2)",/^l2 lms$/i],["Infrastructure (L2 System & Network)",/^l2 (system|network)$/i]];
+const svcOf=g=>{if(!g)return"Awaiting assignment";for(const[n,re]of SVC)if(re.test(g))return n;return"Other"};
+const SVC_ORDER=[...SVC.map(s=>s[0]),"Other","Awaiting assignment"];
+let T=[],ASOF=0,period="";
+function load(rows,asof,mode,msg){
+  ASOF=asof;
+  T=rows.map(r=>{const st=r[2]==="Canceled"?"Cancelled":r[2];const l=local(r[1]);
+    return{id:r[0],created:r[1],status:st,aff:affOf(r[4]),svc:svcOf(r[3]),od:!!r[6],done:r[8]?Number(r[8]):null,fcr:!!r[9],l1:svcOf(r[3])==="Service Desk (L1)",month:l.y+"-"+pad(l.m),
+      closed:st==="Closed"||st==="Resolved",open:st==="Open",hold:st==="On Hold",cancel:st==="Cancelled"}});
+  const la=local(ASOF);$("asof").textContent=pad(la.d)+" "+MN[la.m-1]+" "+la.y+", "+pad(la.h)+":"+pad(la.mi);
+  const lv=$("live");if(mode==="live"){lv.className="live on";lv.textContent="Live · refreshes every 5 min"}else{lv.className="live warn";lv.textContent="Data is out of date"}
+  if(msg!==undefined)banner(msg);
+  buildPeriods();render();
+}
+function banner(html,btn){const el=$("banner");if(!html){el.hidden=true;el.innerHTML="";return}el.hidden=false;el.innerHTML="<span>"+html+"</span>";if(btn){const x=document.createElement("button");x.type="button";x.textContent=btn.label;x.onclick=btn.go;el.appendChild(x)}}
+function months(){return[...new Set(T.map(t=>t.month))].sort()}
+const mLabel=k=>{const[y,m]=k.split("-");return MN[m-1]+" "+y};
+function buildPeriods(){
+  const ms=months(),cur=(()=>{const l=local(ASOF);return l.y+"-"+pad(l.m)})();
+  if(period&&!ms.includes(period))period="";
+  $("period").innerHTML=[["","Since go-live"],...ms.map(m=>[m,mLabel(m)+(m===cur?" (MTD)":"")])].map(([v,l])=>`<button type="button" data-p="${v}" aria-pressed="${v===period}">${l}</button>`).join("");
+  $("period").querySelectorAll("button").forEach(b=>b.onclick=()=>{period=b.dataset.p;buildPeriods();render()});
+}
+/* Business hours: Mon–Fri, 09:00–18:00 UAE time */
+const BH_START=9,BH_END=18;
+function bizHours(a,b){if(!(b>a))return 0;let tot=0;const d0=Math.floor((a+TZ)/DAY),d1=Math.floor((b+TZ)/DAY);
+  for(let d=d0;d<=d1;d++){const wd=(d+4)%7;if(wd===0||wd===6)continue;
+    const s=d*DAY-TZ+BH_START*36e5,e=d*DAY-TZ+BH_END*36e5,lo=Math.max(a,s),hi=Math.min(b,e);if(hi>lo)tot+=hi-lo}
+  return tot/36e5}
+const sum=a=>{const o={n:a.length,c:0,o:0,h:0,x:0,od:0,l1c:0,fcr:0,tt:0,tc:0,tn:0,durs:[]};a.forEach(t=>{if(t.closed){o.c++;if(t.done&&t.done>=t.created){if(t.bh==null)t.bh=bizHours(t.created,t.done);const d=t.bh;o.tt+=d;o.tc+=(t.done-t.created)/36e5;o.tn++;o.durs.push(d)}if(t.l1){o.l1c++;if(t.fcr)o.fcr++}}else if(t.open)o.o++;else if(t.hold)o.h++;else if(t.cancel)o.x++;if((t.open||t.hold)&&t.od)o.od++});
+  o.rate=o.n?o.c/o.n*100:0;o.fcrRate=o.l1c?o.fcr/o.l1c*100:null;o.mttr=o.tn?o.tt/o.tn:null;o.mttrClock=o.tn?o.tc/o.tn:null;
+  if(o.durs.length){const d=o.durs.sort((x,y)=>x-y),m=d.length>>1;o.med=d.length%2?d[m]:(d[m-1]+d[m])/2}else o.med=null;return o};
+const hrs=h=>h==null?"–":(Math.round(h*10)/10).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
+const dur=h=>h==null?"–":hrs(h)+" business hrs";
+const fcls=r=>r>=FCR_TARGET?"good":r>=50?"warn":"bad";
+const cls=r=>r>=TARGET?"good":r>=80?"warn":"bad";
+const pct=r=>{let v=Math.round(r*10)/10;if(r<TARGET&&v>=TARGET)v=TARGET-0.1;return v.toFixed(1)+"%"};
+function rateCell(s){return`<div class="rate"><div class="gauge"><b style="width:${s.rate}%;background:var(--${cls(s.rate)})"></b><i style="left:${TARGET}%"></i></div><span class="${cls(s.rate)}">${s.n?pct(s.rate):"–"}</span></div>`}
+function group(a,key,order){const m=new Map();a.forEach(t=>{if(!m.has(t[key]))m.set(t[key],[]);m.get(t[key]).push(t)});return[...m.keys()].sort((x,y)=>{const i=order.indexOf(x),j=order.indexOf(y);return(i<0?99:i)-(j<0?99:j)||x.localeCompare(y)}).map(k=>[k,sum(m.get(k))])}
+function table(id,first,rows,tot,withFcr){
+  const fc=s=>s.fcrRate==null?'<span class="muted">–</span>':`<span class="${fcls(s.fcrRate)}" style="font-weight:700">${pct(s.fcrRate)}</span>`;
+  const cell=s=>`<td class="n">${fmt(s.n)}</td><td class="n">${fmt(s.c)}</td><td class="n">${fmt(s.o+s.h)}</td><td class="n">${fmt(s.x)}</td><td class="n">${rateCell(s)}</td>${withFcr?`<td class="n">${fc(s)}</td>`:""}<td class="n">${hrs(s.mttr)}${s.mttr==null?"":`<div class="sub">${hrs(s.mttrClock)} clock</div>`}</td>`;
+  let h=`<thead><tr><th>${first}</th><th class="n">Tickets</th><th class="n">Closed</th><th class="n">Open backlog</th><th class="n">Cancelled</th><th class="n">Closure rate</th>${withFcr?'<th class="n">FCR (L1)</th>':""}<th class="n">MTTR<div class="sub" style="text-transform:none;letter-spacing:0">business hrs</div></th></tr></thead><tbody>`;
+  rows.forEach(([k,s])=>{h+=`<tr><td>${esc(k)}${k==="Salesforce Notifications"?'<div class="sub">Automated system tickets</div>':""}</td>${cell(s)}</tr>`});
+  h+=`<tr class="tot"><td>Total</td>${cell(tot)}</tr></tbody>`;
+  $(id).innerHTML=h;
+}
+function render(){
+  const A=T.filter(t=>!period||t.month===period),s=sum(A);
+  // headline
+  const big=$("rateBig");big.textContent=s.n?pct(s.rate):"–";big.className="big "+cls(s.rate);
+  const g=$("rateGauge").querySelector("b");g.style.width=s.rate+"%";g.style.background=`var(--${cls(s.rate)})`;$("rateGauge").querySelector("i").style.left=TARGET+"%";
+  const gap=s.rate-TARGET;
+  $("rateSub").textContent=`Target above ${TARGET}% · ${gap>=0?(gap.toFixed(1)+" points above target"):(Math.abs(gap).toFixed(1)+" points below target")} · ${fmt(s.c)} of ${fmt(s.n)} tickets closed`;
+  const fb=$("fcrBig"),fg=$("fcrGauge").querySelector("b");$("fcrGauge").querySelector("i").style.left=FCR_TARGET+"%";
+  if(s.fcrRate==null){fb.textContent="–";fb.className="big";fg.style.width="0";$("fcrSub").textContent="No L1 tickets resolved in this period"}
+  else{fb.textContent=pct(s.fcrRate);fb.className="big "+fcls(s.fcrRate);fg.style.width=s.fcrRate+"%";fg.style.background=`var(--${fcls(s.fcrRate)})`;
+    const fgap=s.fcrRate-FCR_TARGET;$("fcrSub").textContent=`Target ${FCR_TARGET}% · ${Math.abs(fgap).toFixed(1)} points ${fgap>=0?"above":"below"} target · ${fmt(s.fcr)} of ${fmt(s.l1c)} resolved L1 tickets fixed on first contact`}
+  $("mttrBig").innerHTML=s.mttr==null?"–":hrs(s.mttr)+'<span class="unit"> business hrs</span>';
+  $("mttrSub").textContent=s.mttr==null?"No tickets closed in this period":`Business hours Mon–Fri, 9 AM – 6 PM · ${hrs(s.mttrClock)} clock hours · ${fmt(s.tn)} closed tickets · half closed within ${dur(s.med)}`;
+  const tile=(l,v,c,sub)=>`<div class="tile ${c}"><span class="lab">${l}</span><span class="v">${v}</span><span class="s">${sub||"&nbsp;"}</span></div>`;
+  $("tiles").innerHTML=tile("Tickets raised",fmt(s.n),"",period?mLabel(period):"Since 24 Aug 2026")+tile("Closed / Resolved",fmt(s.c),"g",s.n?pct(s.c/s.n*100)+" of tickets":"")
+    +tile("Open",fmt(s.o),"w","Being worked")+tile("On Hold",fmt(s.h),"h","Awaiting user or vendor")+tile("Cancelled",fmt(s.x),"c",s.n?pct(s.x/s.n*100)+" of tickets":"")
+    +tile("Past due",fmt(s.od),s.od?"r":"","Open or on hold, past SLA due time");
+  // reconciliation
+  const parts=s.c+s.o+s.h+s.x;const aff=group(A,"aff",AFF_ORDER),svc=group(A,"svc",SVC_ORDER);
+  const ok=parts===s.n&&aff.reduce((a,[,x])=>a+x.n,0)===s.n&&svc.reduce((a,[,x])=>a+x.n,0)===s.n;
+  const rc=$("recon");rc.className="recon "+(ok?"ok":"bad");rc.textContent=ok?`✓ ${fmt(s.n)} tickets = ${fmt(s.c)} closed + ${fmt(s.o)} open + ${fmt(s.h)} on hold + ${fmt(s.x)} cancelled; affiliate and service-line totals match`:"Totals do not reconcile. Please report this.";
+  table("affTable","Affiliate",aff,s,true);table("svcTable","Service line",svc,s,false);
+  chart();points(A,s,aff,svc);
+}
+function chart(){
+  const ms=months(),data=ms.map(m=>[m,sum(T.filter(t=>t.month===m))]);
+  const W=520,H=250,L=44,R=12,Tp=26,B=30,iw=W-L-R,ih=H-Tp-B;
+  const max=Math.max(1,...data.map(d=>d[1].n));const step=max>1500?500:max>600?200:100;const top=Math.ceil(max/step)*step;
+  const y=v=>Tp+ih-v/top*ih,bw=Math.min(70,iw/data.length*.55);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tickets by month">`;
+  for(let v=0;v<=top;v+=step)svg+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(v)}</text>`;
+  data.forEach(([m,s],i)=>{const cx=L+iw/data.length*(i+.5),x=cx-bw/2;let base=s.n?0:0;
+    const seg=(v,c)=>{if(!v)return"";const r=`<rect x="${x}" y="${y(base+v)}" width="${bw}" height="${y(base)-y(base+v)}" fill="var(--${c})"${m===period?' stroke="var(--fg)" stroke-width="1.5"':""}/>`;base+=v;return r};
+    svg+=seg(s.c,"good")+seg(s.o+s.h,"warn")+seg(s.x,"cancel");
+    svg+=`<text x="${cx}" y="${y(s.n)-8}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--${cls(s.rate)})">${pct(s.rate)}</text>`;
+    svg+=`<text x="${cx}" y="${H-10}" text-anchor="middle" font-size="12" fill="var(--fg)">${MN[+m.slice(5)-1]} · ${fmt(s.n)}</text>`;});
+  $("chart").innerHTML=svg+"</svg>";
+}
+function points(A,s,aff,svc){
+  const P=[],real=aff.filter(([k,x])=>k!=="Salesforce Notifications"&&x.n>=10);
+  if(s.n)P.push([cls(s.rate),`Closure rate ${pct(s.rate)} against the ${TARGET}% target${period?" for "+mLabel(period):" since go-live"}.`]);
+  if(s.fcrRate!=null)P.push([fcls(s.fcrRate),`L1 first call resolution ${pct(s.fcrRate)} against the ${FCR_TARGET}% target.`]);
+  if(s.mttr!=null){const sl=svc.filter(([,x])=>x.mttr!=null&&x.tn>=10).sort((a,b)=>b[1].mttr-a[1].mttr)[0];
+    P.push(["warn",`Mean time to resolve ${dur(s.mttr)}; half of tickets close within ${dur(s.med)}.`+(sl?` Longest: ${esc(sl[0])} at ${dur(sl[1].mttr)}.`:"")])}
+  const ex=A.filter(t=>t.aff!=="Salesforce Notifications"),se=sum(ex);
+  if(ex.length!==A.length&&se.n)P.push([cls(se.rate),`Excluding automated Salesforce notifications, closure rate is ${pct(se.rate)} on ${fmt(se.n)} user-raised tickets.`]);
+  const below=real.filter(([,x])=>x.rate<TARGET);
+  if(below.length)P.push(["warn",`Below target: ${below.map(([k,x])=>esc(k)+" ("+pct(x.rate)+")").join(", ")}.`]);
+  const above=real.filter(([,x])=>x.rate>=TARGET);if(above.length)P.push(["good",`At or above target: ${above.map(([k,x])=>esc(k)+" ("+pct(x.rate)+")").join(", ")}.`]);
+  const back=svc.filter(([,x])=>x.o+x.h>0).sort((a,b)=>(b[1].o+b[1].h)-(a[1].o+a[1].h)).slice(0,2);
+  if(back.length&&s.o+s.h)P.push(["warn",`Open backlog of ${fmt(s.o+s.h)} tickets; largest share with ${back.map(([k,x])=>esc(k)+" ("+fmt(x.o+x.h)+")").join(" and ")}.`]);
+  const aged=A.filter(t=>(t.open||t.hold)&&ASOF-t.created>30*DAY).length;
+  if(aged)P.push(["bad",`${fmt(aged)} open or on-hold tickets are older than 30 days.`]);
+  if(s.od)P.push(["bad",`${fmt(s.od)} open or on-hold tickets are past their SLA due time.`]);
+  const un=A.filter(t=>t.svc==="Awaiting assignment"&&(t.open||t.hold)).length;
+  if(un)P.push(["warn",`${fmt(un)} open tickets have no support group assigned yet.`]);
+  $("pts").innerHTML=P.map(([c,t])=>`<li><span class="dot ${c}"></span><span>${t}</span></li>`).join("")||'<li><span class="dot good"></span><span>No tickets in this period.</span></li>';
+}
+load(window.SNAP||[],window.SNAP_ASOF||Date.now(),"live");
+
+/* Live data: a GitHub Action rebuilds data/*.js from the Nema helpdesk every 5 minutes; the page re-reads them every 5 minutes */
+const EVERY=5*60e3,STALE=20*60e3;
+function getScript(src){return new Promise((ok,fail)=>{const el=document.createElement("script");el.src=src+"?t="+Date.now();el.onload=()=>{el.remove();ok()};el.onerror=()=>{el.remove();fail()};document.head.appendChild(el)})}
+function freshness(){if(Date.now()-ASOF>STALE){$("live").className="live warn";$("live").textContent="Live · data delayed";banner("The latest refresh is more than 20 minutes old. Showing the last successful update.")}}
+async function reloadData(){
+  try{await getScript("data/snap.js");
+    load(window.SNAP||[],window.SNAP_ASOF||0,"live","");freshness();return true}
+  catch(_){$("live").className="live warn";$("live").textContent="Live · last refresh failed";banner("Couldn't load the latest data. Showing the last successful update; it will try again in 5 minutes.");return false}
+}
+freshness();
+setInterval(reloadData,EVERY);
+$("refresh").hidden=false;
+$("refresh").onclick=async()=>{const btn=$("refresh");if(btn.disabled)return;btn.disabled=true;btn.textContent="Refreshing…";
+  const ok=await reloadData();const t=local(Date.now());btn.textContent=ok?"Updated "+pad(t.h)+":"+pad(t.mi):"Refresh failed";
+  setTimeout(()=>{btn.disabled=false;btn.textContent="Refresh now"},3000)};
+</script>
+
+</body></html>

@@ -1,0 +1,53 @@
+name: Refresh ITSM Reports
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"     # every 5 minutes (GitHub's minimum; runs can start a few minutes late)
+  workflow_dispatch:           # "Run workflow" button for a manual refresh
+  push:
+    branches: [main]           # republish straight away when a report page is changed
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull tickets and changes from the Nema helpdesk
+        env:
+          ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ACCOUNTS_URL: ${{ secrets.ZOHO_ACCOUNTS_URL }}
+          SDP_BASE_URL: ${{ secrets.SDP_BASE_URL }}
+        run: python3 scripts/fetch_sdp.py "$RUNNER_TEMP/pages"
+
+      - name: Build report data (stops if the pull was incomplete)
+        run: python3 scripts/build_reports.py "$RUNNER_TEMP/pages" site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publish to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

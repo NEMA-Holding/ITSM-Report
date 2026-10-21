@@ -1,0 +1,75 @@
+"""Build the data files for every report from one pull of the Nema helpdesk.
+usage: python3 build_reports.py PAGES_DIR SITE_DIR
+
+To add a report or change which tickets a report shows, edit REPORTS below.
+Stops without writing anything if fewer tickets arrived than the helpdesk total,
+so a partial pull never goes live.
+"""
+import glob, json, os, sys, time
+
+pages_dir, site = sys.argv[1], sys.argv[2]
+
+name = lambda o: (o.get("name") or "") if isinstance(o, dict) else ""
+val = lambda o: o.get("value") if isinstance(o, dict) else o
+
+# Which tickets each report shows: (folder, filter on group and customer name, row format)
+REPORTS = [
+    ("erp",         lambda g, c: g.lower().startswith("erp"),                          "detail"),
+    ("liwa",        lambda g, c: c == "Liwa University",                               "detail"),
+    ("app-support", lambda g, c: g == "L2 Application" and c == "Abu Dhabi University", "detail"),
+    ("executive",   lambda g, c: True,                                                 "summary"),
+]
+
+
+def detail(q):
+    return [str(val(q["display_id"])), q.get("subject") or "", int(q["created_time"]["value"]), name(q.get("status")),
+            name(q.get("technician")) or "Unassigned", name(q.get("group")), name(q.get("customer")),
+            name(q.get("requester")), name(q.get("request_type")) or "Incident", val(q.get("due_by_time")),
+            1 if q.get("is_overdue") else 0, 1 if q.get("is_first_response_overdue") else 0]
+
+
+def summary(q):
+    done = val(q.get("completed_time"))
+    return [str(val(q["display_id"])), int(q["created_time"]["value"]), name(q.get("status")), name(q.get("group")),
+            name(q.get("customer")), name(q.get("request_type")) or "Incident", 1 if q.get("is_overdue") else 0,
+            name(q.get("technician")) or "Unassigned", int(done) if done else None, 1 if q.get("is_fcr") else 0]
+
+
+def change(c):
+    cat, sub = name(c.get("category")), name(c.get("subcategory"))
+    return [str(val(c["display_id"])), c.get("title") or "", int(c["created_time"]["value"]), name(c.get("status")),
+            name(c.get("change_owner")) or "Unassigned", name(c.get("customer")), name(c.get("group")),
+            name(c.get("change_type")), name(c.get("stage")), name(c.get("approval_status")),
+            name(c.get("risk")), name(c.get("priority")), cat + (" / " + sub if sub else ""),
+            val(c.get("completed_time"))]
+
+
+def read(folder, key):
+    rows, total = {}, None
+    for f in sorted(glob.glob(os.path.join(pages_dir, folder, "*.json"))):
+        d = json.load(open(f)); d = d.get("data", d)
+        total = d.get("list_info", {}).get("total_count", total)
+        for q in d.get(key, []):
+            rows[q["id"]] = q
+    return list(rows.values()), total
+
+
+tickets, total = read("req", "requests")
+if not tickets or total is None or len(tickets) < int(total):
+    sys.exit("incomplete pull: %d of %s tickets, nothing published" % (len(tickets), total))
+changes, _ = read("chg", "changes")
+
+asof = int(time.time() * 1000)
+dump = lambda v: json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+for folder, keep, fmt in REPORTS:
+    rows = [(detail if fmt == "detail" else summary)(q) for q in tickets
+            if keep(name(q.get("group")), name(q.get("customer")))]
+    path = os.path.join(site, folder, "data", "snap.js")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    open(path, "w", encoding="utf8").write("window.SNAP_ASOF=%d;\nwindow.SNAP=%s;\n" % (asof, dump(rows)))
+    print(folder, len(rows), "tickets")
+
+# ERP change requests: categories starting with "ERP"
+erp_chg = sorted((change(c) for c in changes if name(c.get("category")).upper().startswith("ERP")), key=lambda r: int(r[0]))
+open(os.path.join(site, "erp", "data", "chg.js"), "w", encoding="utf8").write("window.CHG=%s;\n" % dump(erp_chg))
+print("erp", len(erp_chg), "changes;", len(tickets), "tickets in total")

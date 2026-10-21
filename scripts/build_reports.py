@@ -15,6 +15,9 @@ val = lambda o: o.get("value") if isinstance(o, dict) else o
 # Affiliates shown in the Application report
 APP_AFFILIATES = {"Abu Dhabi University", "Liwa University", "Knowledge Group"}
 
+# Groups shown in the Salesforce report (each affiliate has its own copy of these groups)
+SALESFORCE_GROUPS = {"SalesForce Team", "SalesForce External", "L1 Support- SalesForce"}
+
 # Which tickets each report shows: (folder, filter on group and customer name, row format)
 REPORTS = [
     ("erp",         lambda g, c: g.lower().startswith("erp"),                          "detail"),
@@ -23,6 +26,10 @@ REPORTS = [
     ("knowledge-group", lambda g, c: c == "Knowledge Group",                           "detail"),
     ("arclight",    lambda g, c: c == "ArcLight Services",                             "detail"),
     ("app-support", lambda g, c: g == "L2 Application" and c in APP_AFFILIATES,        "detail"),
+    ("salesforce",  lambda g, c: g in SALESFORCE_GROUPS or c == "SalesForce Notification", "detail"),
+    ("network",     lambda g, c: g == "L2 Network",                                    "detail"),
+    ("system",      lambda g, c: g == "L2 System",                                     "detail"),
+    ("lms",         lambda g, c: g == "L2 LMS",                                        "detail"),
     ("executive",   lambda g, c: True,                                                 "summary"),
 ]
 

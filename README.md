@@ -12,6 +12,10 @@ Publishes the four ITSM reports at https://itsmreport.adu.ac.ae so anyone with t
 | /liwa | Liwa University Report |
 | /knowledge-group | Knowledge Group Report |
 | /arclight | ArcLight Services Report |
+| /salesforce | Salesforce Report (SalesForce Team, SalesForce External, L1 Support- SalesForce; all affiliates incl. SalesForce Notification) |
+| /network | Network Report (L2 Network, all affiliates) |
+| /system | System Report (L2 System, all affiliates) |
+| /lms | LMS Report (L2 LMS, all affiliates) |
 
 ## How it works
 Every 5 minutes GitHub reads all tickets and changes from the Nema helpdesk (ServiceDesk Plus) with its own read-only API key, splits them per report, and republishes the site. If the pull is incomplete nothing is published, so the totals always tally.

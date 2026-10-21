@@ -2,41 +2,180 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ITSM Reports</title>
 <style>
-:root{--bg:#f8f7f6;--surface:#fff;--fg:#1e1e1e;--muted:#5b6670;--line:#dde6eb;--accent:#185a7d;--accent-soft:#e3edf2;--gold:#ffcb4f;--band:#185a7d;--band-deep:#123f58}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1820;--surface:#14232e;--fg:#e8eef1;--muted:#9aabb6;--line:#24384a;--accent:#7fb3cf;--accent-soft:#1b3646;--band:#14496a;--band-deep:#0e3349}}
+/* Layout: navy header band, then three sections of icon cards (Overview, Team reports, Affiliate reports) on a softly tinted ground */
+:root{
+  --bg:#eef3f6; --bg-tint1:#dbe8f0; --bg-tint2:#f6ecd2; --dot:#c9d7e0;
+  --surface:#ffffff; --fg:#1b2730; --muted:#5b6670; --line:#dbe4ea;
+  --band:#185a7d; --band-deep:#0f3a52; --gold:#ffcb4f;
+  --shadow:0 1px 2px rgba(15,58,82,.06),0 6px 18px rgba(15,58,82,.07);
+  --shadow-hover:0 2px 4px rgba(15,58,82,.08),0 14px 32px rgba(15,58,82,.14);
+  /* one hue per report: icon colour and its soft tile */
+  --c-exec:#3f45c4; --t-exec:#e8e9fb;
+  --c-erp:#0d7468;  --t-erp:#dcf2ee;
+  --c-app:#7a3fd6;  --t-app:#efe6fc;
+  --c-sf:#0b7fbf;   --t-sf:#dcf0fb;
+  --c-net:#1d7f45;  --t-net:#def3e6;
+  --c-sys:#c2501a;  --t-sys:#fbe8dd;
+  --c-lms:#a86a08;  --t-lms:#fbf0d6;
+  --c-adu:#1c4f9c;  --t-adu:#e0e9f8;
+  --c-liwa:#a3214a; --t-liwa:#f9e1e8;
+  --c-kg:#0b7a8f;   --t-kg:#d9f1f5;
+  --c-arc:#b07d05;  --t-arc:#fcf1d2;
+  --sans:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b151c; --bg-tint1:#0f2533; --bg-tint2:#1f1c12; --dot:#1a2c38;
+  --surface:#13212b; --fg:#e7eef2; --muted:#9aabb6; --line:#22374a;
+  --band:#14496a; --band-deep:#0b2c40;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); --shadow-hover:0 2px 4px rgba(0,0,0,.35),0 14px 32px rgba(0,0,0,.4);
+  --c-exec:#9ea3ff; --t-exec:#22254d; --c-erp:#5fd1bf; --t-erp:#12332f; --c-app:#c09bff; --t-app:#2c1f47;
+  --c-sf:#6cc6f5; --t-sf:#12304a; --c-net:#6fd59a; --t-net:#14331f; --c-sys:#ff9d6c; --t-sys:#3d2316;
+  --c-lms:#f2c15a; --t-lms:#3a2c10; --c-adu:#8fb3f5; --t-adu:#18294a; --c-liwa:#ff8fb1; --t-liwa:#3d1824;
+  --c-kg:#5fd3e6; --t-kg:#0f3138; --c-arc:#f5cd55; --t-arc:#3a2f0e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b151c; --bg-tint1:#0f2533; --bg-tint2:#1f1c12; --dot:#1a2c38;
+  --surface:#13212b; --fg:#e7eef2; --muted:#9aabb6; --line:#22374a;
+  --band:#14496a; --band-deep:#0b2c40;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); --shadow-hover:0 2px 4px rgba(0,0,0,.35),0 14px 32px rgba(0,0,0,.4);
+  --c-exec:#9ea3ff; --t-exec:#22254d; --c-erp:#5fd1bf; --t-erp:#12332f; --c-app:#c09bff; --t-app:#2c1f47;
+  --c-sf:#6cc6f5; --t-sf:#12304a; --c-net:#6fd59a; --t-net:#14331f; --c-sys:#ff9d6c; --t-sys:#3d2316;
+  --c-lms:#f2c15a; --t-lms:#3a2c10; --c-adu:#8fb3f5; --t-adu:#18294a; --c-liwa:#ff8fb1; --t-liwa:#3d1824;
+  --c-kg:#5fd3e6; --t-kg:#0f3138; --c-arc:#f5cd55; --t-arc:#3a2f0e; color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Arial,Helvetica,sans-serif}
-.wrap{max-width:960px;margin:0 auto;padding:24px 16px 48px;display:grid;gap:20px}
-header{background:linear-gradient(120deg,var(--band-deep),var(--band));color:#fff;border-bottom:4px solid var(--gold);border-radius:8px;padding:22px}
-.eyebrow{font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
-h1{margin:4px 0 0;font-size:clamp(22px,3.4vw,30px)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-a.card{display:grid;gap:6px;align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;color:inherit;text-decoration:none;box-shadow:inset 0 -3px 0 transparent}
-a.card:hover,a.card:focus-visible{background:var(--accent-soft);box-shadow:inset 0 -3px 0 var(--gold);outline:none}
-a.card b{color:var(--accent);font-size:16px}
-a.card span{color:var(--muted);font-size:13px}
-.note{color:var(--muted);font-size:12px;margin:0}
+html{min-height:100%}
+body{margin:0;min-height:100%;color:var(--fg);font:15px/1.5 var(--sans);
+  background:
+    radial-gradient(circle at 1px 1px,var(--dot) 1px,transparent 1.5px) 0 0/22px 22px,
+    radial-gradient(1100px 520px at 8% -8%,var(--bg-tint1),transparent 70%),
+    radial-gradient(900px 480px at 100% 105%,var(--bg-tint2),transparent 70%),
+    var(--bg);
+  background-attachment:fixed}
+.wrap{max-width:1120px;margin:0 auto;padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:30px}
+header{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--band-deep),var(--band));color:#fff;border-bottom:4px solid var(--gold);border-radius:12px;padding:28px 26px 26px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
+header::after{content:"";position:absolute;right:-60px;top:-80px;width:300px;height:300px;border-radius:50%;border:44px solid rgba(255,203,79,.10);pointer-events:none}
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+h1{margin:6px 0 4px;font-size:clamp(26px,4vw,36px);line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.lede{margin:0;color:#d4e2ea;font-size:14px;max-width:60ch}
+.fresh{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:#e8f2f7;white-space:nowrap}
+.fresh i{width:8px;height:8px;border-radius:50%;background:#62d394;box-shadow:0 0 0 0 rgba(98,211,148,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(98,211,148,.55)}70%{box-shadow:0 0 0 8px rgba(98,211,148,0)}100%{box-shadow:0 0 0 0 rgba(98,211,148,0)}}
+section{display:grid;gap:14px}
+.sechead{display:flex;align-items:baseline;gap:12px}
+.sechead h2{margin:0;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sechead::after{content:"";flex:1;height:1px;background:var(--line);align-self:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.grid.one{grid-template-columns:minmax(0,1fr)}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.grid.three{grid-template-columns:minmax(0,1fr)}}
+.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1000px){.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.grid.four{grid-template-columns:minmax(0,1fr)}}
+a.card{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr auto;column-gap:14px;row-gap:4px;align-items:start;
+  background:radial-gradient(240px 140px at 100% 0%,color-mix(in srgb,var(--t) 70%,transparent),transparent 70%),var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;color:inherit;text-decoration:none;box-shadow:var(--shadow);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+a.card:hover,a.card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:color-mix(in srgb,var(--c) 45%,var(--line));outline:none}
+a.card:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.ic{grid-row:1/4;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--t);color:var(--c);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 18%,transparent)}
+.ic svg{width:28px;height:28px}
+a.card b{font-size:16px;line-height:1.3;color:var(--fg)}
+a.card span{color:var(--muted);font-size:13px;line-height:1.45}
+a.card em{font-style:normal;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--c);margin-top:8px;display:inline-flex;align-items:center;gap:4px}
+a.card em::after{content:"→";transition:transform .18s ease}
+a.card:hover em::after{transform:translateX(3px)}
+a.card.wide{grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;padding:22px}
+a.card.wide .ic{grid-row:1/3;width:60px;height:60px}
+a.card.wide .ic svg{width:32px;height:32px}
+a.card.wide b{font-size:18px}
+a.card.wide em{grid-column:3;grid-row:1/3;align-self:center;margin:0}
+@media (max-width:560px){a.card.wide{grid-template-columns:auto 1fr}a.card.wide em{grid-column:2;grid-row:auto;margin-top:8px}}
+.exec{--c:var(--c-exec);--t:var(--t-exec)} .erp{--c:var(--c-erp);--t:var(--t-erp)} .app{--c:var(--c-app);--t:var(--t-app)}
+.sf{--c:var(--c-sf);--t:var(--t-sf)} .net{--c:var(--c-net);--t:var(--t-net)} .sys{--c:var(--c-sys);--t:var(--t-sys)} .lms{--c:var(--c-lms);--t:var(--t-lms)}
+.adu{--c:var(--c-adu);--t:var(--t-adu)} .liwa{--c:var(--c-liwa);--t:var(--t-liwa)} .kg{--c:var(--c-kg);--t:var(--t-kg)} .arc{--c:var(--c-arc);--t:var(--t-arc)}
+.note{color:var(--muted);font-size:12px;margin:0;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <div class="eyebrow">NEMA Holding · Shared Services ITSM</div>
-  <h1>ITSM Reports</h1>
+  <div>
+    <div class="eyebrow">NEMA Holding · Shared Services ITSM</div>
+    <h1>ITSM Reports</h1>
+    <p class="lede">Ticket reports for every team and affiliate, pulled from the Nema helpdesk.</p>
+  </div>
+  <div class="fresh"><i></i>Refreshes every 5 minutes</div>
 </header>
-<nav class="grid" aria-label="Reports">
-  <a class="card" href="executive/"><b>Executive Report</b><span>All affiliates · closure rate, FCR, resolve time</span></a>
-  <a class="card" href="erp/"><b>ERP Report</b><span>ERP tickets and change requests</span></a>
-  <a class="card" href="app-support/"><b>Application Report</b><span>L2 Application · ADU, Liwa University, Knowledge Group</span></a>
-  <a class="card" href="adu/"><b>Abu Dhabi University Report</b><span>All Abu Dhabi University tickets</span></a>
-  <a class="card" href="liwa/"><b>Liwa University Report</b><span>All Liwa University tickets</span></a>
-  <a class="card" href="knowledge-group/"><b>Knowledge Group Report</b><span>All Knowledge Group tickets</span></a>
-  <a class="card" href="arclight/"><b>ArcLight Services Report</b><span>All ArcLight Services tickets</span></a>
-</nav>
-<p class="note">Source: Nema helpdesk (ManageEngine MSP). Data refreshes every 5 minutes.</p>
+
+<section aria-labelledby="h-over">
+  <div class="sechead"><h2 id="h-over">Overview</h2></div>
+  <div class="grid one">
+    <a class="card wide exec" href="executive/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4.2-5.2"/><circle cx="12" cy="17" r="1.4" fill="currentColor"/><path d="M6.2 12.4l1 .6M12 8.5V9.7M17.8 12.4l-1 .6"/></svg></div>
+      <b>Executive Report</b>
+      <span>All affiliates · closure rate, first-contact resolution, resolve time</span>
+      <em>Open report</em>
+    </a>
+  </div>
+</section>
+
+<section aria-labelledby="h-team">
+  <div class="sechead"><h2 id="h-team">Team reports</h2></div>
+  <div class="grid three">
+    <a class="card erp" href="erp/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V5.5"/><path d="M4.5 12v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V12"/></svg></div>
+      <b>ERP Report</b><span>ERP tickets and change requests</span><em>Open report</em>
+    </a>
+    <a class="card app" href="app-support/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><path d="M17 13.5v7M13.5 17h7"/></svg></div>
+      <b>Application Report</b><span>L2 Application · ADU, Liwa University, Knowledge Group</span><em>Open report</em>
+    </a>
+    <a class="card sf" href="salesforce/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A5.5 5.5 0 0 0 7.6 9.1 4.7 4.7 0 0 0 7 18.5z"/></svg></div>
+      <b>Salesforce Report</b><span>Salesforce team groups and Salesforce Notification tickets</span><em>Open report</em>
+    </a>
+    <a class="card net" href="network/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><circle cx="12" cy="12.5" r="1.6"/><path d="M12 7.2v3.7M10.7 13.6l-4.1 3M13.3 13.6l4.1 3M7.2 18h9.6"/></svg></div>
+      <b>Network Report</b><span>L2 Network · all affiliates</span><em>Open report</em>
+    </a>
+    <a class="card sys" href="system/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="6.5" rx="1.8"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="1.8"/><path d="M7 7.25h.01M7 16.75h.01M11 7.25h6M11 16.75h6"/></svg></div>
+      <b>System Report</b><span>L2 System · all affiliates</span><em>Open report</em>
+    </a>
+    <a class="card lms" href="lms/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4.2c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8v-4.2"/><path d="M21.5 9.5v5"/></svg></div>
+      <b>LMS Report</b><span>L2 LMS · all affiliates</span><em>Open report</em>
+    </a>
+  </div>
+</section>
+
+<section aria-labelledby="h-aff">
+  <div class="sechead"><h2 id="h-aff">Affiliate reports</h2></div>
+  <div class="grid four">
+    <a class="card adu" href="adu/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 4l9 5.5"/><path d="M4.5 9.5h15"/><path d="M6 12v6M10 12v6M14 12v6M18 12v6"/><path d="M3.5 20.5h17"/></svg></div>
+      <b>Abu Dhabi University Report</b><span>All Abu Dhabi University tickets</span><em>Open report</em>
+    </a>
+    <a class="card liwa" href="liwa/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20.5V10l8-5 8 5v10.5"/><path d="M9.5 20.5v-5a2.5 2.5 0 0 1 5 0v5"/><path d="M2.5 20.5h19"/><path d="M12 5V2.5h3"/></svg></div>
+      <b>Liwa University Report</b><span>All Liwa University tickets</span><em>Open report</em>
+    </a>
+    <a class="card kg" href="knowledge-group/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.3 5.2 7.9 4.5 3.5 4.5v13c4.4 0 6.8.7 8.5 2 1.7-1.3 4.1-2 8.5-2v-13c-4.4 0-6.8.7-8.5 2z"/><path d="M12 6.5v13"/></svg></div>
+      <b>Knowledge Group Report</b><span>All Knowledge Group tickets</span><em>Open report</em>
+    </a>
+    <a class="card arc" href="arclight/">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M8.5 14.5a6 6 0 1 1 7 0c-.7.5-1 1.2-1 2v1h-5v-1c0-.8-.3-1.5-1-2z"/></svg></div>
+      <b>ArcLight Services Report</b><span>All ArcLight Services tickets</span><em>Open report</em>
+    </a>
+  </div>
+</section>
+
+<p class="note">Source: Nema helpdesk (ManageEngine MSP). Each report shows when its data was last updated.</p>
 </div>
 </body>
 </html>

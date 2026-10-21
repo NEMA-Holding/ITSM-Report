@@ -209,8 +209,8 @@ function render(){
   const c=counts(withTech);
   $("kpis").innerHTML=[
     ["Total tickets",c.total,"","",""],
-    ["Closed / Resolved",c.done,"closed",c.Resolved?c.Closed+" closed · "+c.Resolved+" resolved":"","Closed"],
     ["Open",c.Open,"open",c.overdue+" past due date","Open"],
+    ["Closed / Resolved",c.done,"closed",c.Resolved?c.Closed+" closed · "+c.Resolved+" resolved":"","Closed"],
     ["Technician Unassigned",withTech.filter(t=>t.tech==="Unassigned").length,"unas",withTech.filter(t=>t.tech==="Unassigned"&&t.status==="Open").length+" still open",null],
     ["On Hold",c["On Hold"],"hold","","On Hold"],
     ["Cancelled",c.Cancelled,"","","Cancelled"],

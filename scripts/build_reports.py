@@ -18,7 +18,10 @@ APP_AFFILIATES = {"Abu Dhabi University", "Liwa University", "Knowledge Group"}
 # Which tickets each report shows: (folder, filter on group and customer name, row format)
 REPORTS = [
     ("erp",         lambda g, c: g.lower().startswith("erp"),                          "detail"),
+    ("adu",         lambda g, c: c == "Abu Dhabi University",                          "detail"),
     ("liwa",        lambda g, c: c == "Liwa University",                               "detail"),
+    ("knowledge-group", lambda g, c: c == "Knowledge Group",                           "detail"),
+    ("arclight",    lambda g, c: c == "ArcLight Services",                             "detail"),
     ("app-support", lambda g, c: g == "L2 Application" and c in APP_AFFILIATES,        "detail"),
     ("executive",   lambda g, c: True,                                                 "summary"),
 ]

@@ -7,7 +7,7 @@ Publishes the four ITSM reports at https://itsmreport.adu.ac.ae so anyone with t
 | itsmreport.adu.ac.ae | Landing page with links to all reports |
 | /executive | Executive Report (all tickets) |
 | /erp | ERP Report, with ERP change requests |
-| /app-support | Application Report (L2 Application, Abu Dhabi University) |
+| /app-support | Application Report (L2 Application: Abu Dhabi University, Liwa University, Knowledge Group) |
 | /liwa | Liwa University Report |
 
 ## How it works

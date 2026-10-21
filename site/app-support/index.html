@@ -97,7 +97,7 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
 <div class="wrap">
 <header>
   <div>
-    <div class="eyebrow">Abu Dhabi University · L2 Application</div>
+    <div class="eyebrow">ADU · Liwa University · Knowledge Group · L2 Application</div>
     <h1>Application <span>Report</span></h1>
   </div>
   <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live · refreshes every 5 min</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
@@ -127,7 +127,7 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
     <div class="chart" id="chart"></div>
   </section>
   <section class="panel">
-    <h2>By Request Type</h2>
+    <h2>By Affiliate</h2>
     <div class="scroll"><table id="affTable"></table></div>
   </section>
 </div>
@@ -143,7 +143,7 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
   <div class="scroll"><table id="regTable"></table></div>
 </section>
 </div>
-<p class="note">Covers tickets in the L2 Application group for Abu Dhabi University. Ticket closure rate = (closed + resolved tickets) ÷ total tickets, for incidents and service requests together; for example 100 tickets with 90 closed or resolved gives 90%. Choose a request type to see it for that type only. Incident SLA compliance = incidents resolved or still open within their SLA resolution time (not marked overdue by ServiceDesk Plus), as a share of all incidents; service requests have no SLA and are not counted. Dates shown in UAE time.</p>
+<p class="note">Covers tickets in the L2 Application group for Abu Dhabi University, Liwa University and Knowledge Group. Ticket closure rate = (closed + resolved tickets) ÷ total tickets, for incidents and service requests together; for example 100 tickets with 90 closed or resolved gives 90%. Choose a request type to see it for that type only. Incident SLA compliance = incidents resolved or still open within their SLA resolution time (not marked overdue by ServiceDesk Plus), as a share of all incidents; service requests have no SLA and are not counted. Dates shown in UAE time.</p>
 </div>
 
 <script src="data/snap.js"></script>
@@ -159,6 +159,7 @@ const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec
 const GROUP_LABEL={"ERP App External":"ERP App - Smart ERP","ERP Infra External":"ERP Infra - InfoDynamics"};
 const AFF_LABEL=n=>/^nema (helpdesk|holding)$/i.test(n||"")?"NEMA":n;
 const ERP_TECHS=[];
+const APP_AFFS=["Abu Dhabi University","Liwa University","Knowledge Group"];
 const TECH_LABEL=n=>n;
 const enrich=t=>{if(t.status==="Canceled")t.status="Cancelled";t.tech=TECH_LABEL(t.tech);t.group=GROUP_LABEL[t.group]||t.group;t.aff=AFF_LABEL(t.aff);const l=local(t.created);t.month=l.y+"-"+pad(l.m);t.day=t.month+"-"+pad(l.d);t.disp=pad(l.d)+" "+MN[l.m-1]+" "+l.y+" "+pad(l.h)+":"+pad(l.mi);t.overdue=t.status==="Open"&&t.due&&t.due<ASOF};
 function showAsof(){const la=local(ASOF);document.getElementById("asof").textContent=pad(la.d)+" "+MN[la.m-1]+" "+la.y+", "+pad(la.h)+":"+pad(la.mi)}
@@ -183,7 +184,7 @@ function fillKeep(sel,opts,allLabel,lab){const v=sel.value;fill(sel,opts,allLabe
 function setupFilters(){
 months=uniq("month");
 fillKeep($("fMonth"),months,"All months",monthLabel);
-fillKeep($("fAff"),[...new Set([...uniq("aff"),...CH.map(c=>c.aff)])].sort((a,b)=>a.localeCompare(b)),"All affiliates");
+fillKeep($("fAff"),[...new Set([...APP_AFFS,...uniq("aff"),...CH.map(c=>c.aff)])].sort((a,b)=>a.localeCompare(b)),"All affiliates");
 fillKeep($("fGroup"),uniq("group"),"All groups");
 fillKeep($("fTech"),[...new Set([...uniq("tech"),...CH.map(c=>c.tech),...ERP_TECHS])].filter(n=>n!=="Unassigned").sort((a,b)=>a.localeCompare(b)),"All technicians");
 fillKeep($("fStatus"),["Open","Closed","Resolved","On Hold","Cancelled"].filter(s=>T.some(t=>t.status===s)),"All statuses");
@@ -220,12 +221,12 @@ function render(){
   $("kpis").querySelectorAll("button.pick").forEach(b=>b.onclick=()=>{const v=b.dataset.s;$("fStatus").value=($("fStatus").value===v)?"":v;render()});
 
   {const by=k=>{const m={};withTech.forEach(t=>m[t[k]]=(m[t[k]]||0)+1);return Object.values(m).reduce((a,b)=>a+b,0)};
-   const st=c.Open+c.done+c["On Hold"]+c.Cancelled,checks=[["request types",by("type")],["technicians incl. unassigned",by("tech")],["groups",by("group")],["statuses",st]];
+   const st=c.Open+c.done+c["On Hold"]+c.Cancelled,checks=[["affiliates",by("aff")],["technicians incl. unassigned",by("tech")],["groups",by("group")],["statuses",st]];
    const bad=checks.filter(x=>x[1]!==c.total),el=$("recon");
    el.className="recon "+(bad.length?"bad":"ok");
    el.textContent=bad.length?"Check: "+bad.map(x=>x[0]+" add up to "+x[1]).join(", ")+" but total is "+c.total+".":"";el.hidden=!bad.length;}
   chart(withTech,f);
-  breakdown("affTable",base.filter(t=>(!f.tech||t.tech===f.tech)),"type","Request type",null);
+  breakdown("affTable",base.filter(t=>(!f.tech||t.tech===f.tech)),"aff","Affiliate",null);
   breakdown("techTable",base,"tech","Technician",f.tech);
   register(scoped,f);
 }
@@ -255,7 +256,7 @@ function chart(arr,f){
 }
 
 function breakdown(id,arr,k,label,selected){const sv=showViol;
-  const groups={};if(k==="tech")ERP_TECHS.forEach(n=>{if(!selected||selected===n)groups[n]=[]});arr.forEach(t=>{(groups[t[k]]=groups[t[k]]||[]).push(t)});
+  const groups={};if(k==="tech")ERP_TECHS.forEach(n=>{if(!selected||selected===n)groups[n]=[]});if(k==="aff")APP_AFFS.forEach(n=>{if(!$("fAff").value||$("fAff").value===n)groups[n]=[]});arr.forEach(t=>{(groups[t[k]]=groups[t[k]]||[]).push(t)});
   const rows=Object.entries(groups).filter(([n])=>!(k==="tech"&&n==="Unassigned")).map(([n,a])=>({n,c:counts(a)})).sort((a,b)=>b.c.total-a.c.total);
   const clickable=id==="techTable";
   let h=`<thead><tr><th>${label}</th><th class="n">Total</th><th class="n">Open</th><th class="n hw">Closed / Resolved</th><th class="n">On Hold</th>${clickable?'<th class="n">Past due</th>':""}${sv?'<th class="n hw">Incident SLA compliance</th>':""}<th class="n hw">Ticket closure rate</th>${clickable?"<th></th>":""}</tr></thead><tbody>`;

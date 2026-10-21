@@ -12,11 +12,14 @@ pages_dir, site = sys.argv[1], sys.argv[2]
 name = lambda o: (o.get("name") or "") if isinstance(o, dict) else ""
 val = lambda o: o.get("value") if isinstance(o, dict) else o
 
+# Affiliates shown in the Application report
+APP_AFFILIATES = {"Abu Dhabi University", "Liwa University", "Knowledge Group"}
+
 # Which tickets each report shows: (folder, filter on group and customer name, row format)
 REPORTS = [
     ("erp",         lambda g, c: g.lower().startswith("erp"),                          "detail"),
     ("liwa",        lambda g, c: c == "Liwa University",                               "detail"),
-    ("app-support", lambda g, c: g == "L2 Application" and c == "Abu Dhabi University", "detail"),
+    ("app-support", lambda g, c: g == "L2 Application" and c in APP_AFFILIATES,        "detail"),
     ("executive",   lambda g, c: True,                                                 "summary"),
 ]
 

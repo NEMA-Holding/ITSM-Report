@@ -91,7 +91,7 @@ ul.pts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start
     <div class="eyebrow">NEMA Shared IT Services · Nema helpdesk</div>
     <h1>Executive <span>Report</span></h1>
   </div>
-  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live · refreshes every 5 min</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
+  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
 </header>
 <div id="banner" class="banner" hidden></div>
 
@@ -169,7 +169,7 @@ function load(rows,asof,mode,msg){
     return{id:r[0],created:r[1],status:st,aff:affOf(r[4]),svc:svcOf(r[3]),od:!!r[6],done:r[8]?Number(r[8]):null,fcr:!!r[9],l1:svcOf(r[3])==="Service Desk (L1)",month:l.y+"-"+pad(l.m),
       closed:st==="Closed"||st==="Resolved",open:st==="Open",hold:st==="On Hold",cancel:st==="Cancelled"}});
   const la=local(ASOF);$("asof").textContent=pad(la.d)+" "+MN[la.m-1]+" "+la.y+", "+pad(la.h)+":"+pad(la.mi);
-  const lv=$("live");if(mode==="live"){lv.className="live on";lv.textContent="Live · refreshes every 5 min"}else{lv.className="live warn";lv.textContent="Data is out of date"}
+  const lv=$("live");if(mode==="live"){lv.className="live on";lv.textContent="Live"}else{lv.className="live warn";lv.textContent="Data is out of date"}
   if(msg!==undefined)banner(msg);
   buildPeriods();render();
 }
@@ -266,14 +266,14 @@ function points(A,s,aff,svc){
 }
 load(window.SNAP||[],window.SNAP_ASOF||Date.now(),"live");
 
-/* Live data: a GitHub Action rebuilds data/*.js from the Nema helpdesk every 5 minutes; the page re-reads them every 5 minutes */
+/* Live data: the page re-reads data/*.js periodically */
 const EVERY=5*60e3,STALE=20*60e3;
 function getScript(src){return new Promise((ok,fail)=>{const el=document.createElement("script");el.src=src+"?t="+Date.now();el.onload=()=>{el.remove();ok()};el.onerror=()=>{el.remove();fail()};document.head.appendChild(el)})}
-function freshness(){if(Date.now()-ASOF>STALE){$("live").className="live warn";$("live").textContent="Live · data delayed";banner("The latest refresh is more than 20 minutes old. Showing the last successful update.")}}
+function freshness(){if(Date.now()-ASOF>STALE){$("live").className="live warn";$("live").textContent="Live · data delayed";banner("The latest data is delayed. Showing the last successful update.")}}
 async function reloadData(){
   try{await getScript("data/snap.js");
     load(window.SNAP||[],window.SNAP_ASOF||0,"live","");freshness();return true}
-  catch(_){$("live").className="live warn";$("live").textContent="Live · last refresh failed";banner("Couldn't load the latest data. Showing the last successful update; it will try again in 5 minutes.");return false}
+  catch(_){$("live").className="live warn";$("live").textContent="Live · last refresh failed";banner("Couldn't load the latest data. Showing the last successful update; it will try again shortly.");return false}
 }
 freshness();
 setInterval(reloadData,EVERY);

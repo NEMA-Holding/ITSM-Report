@@ -100,7 +100,7 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
     <div class="eyebrow">Salesforce Team · Salesforce External · Salesforce Notification</div>
     <h1>Salesforce <span>Report</span></h1>
   </div>
-  <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live · refreshes every 5 min</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
+  <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
 </header>
 <div id="banner" class="banner" hidden></div>
 
@@ -289,21 +289,21 @@ function load(rows,asof,mode,note){
   T=rows.map(toRow);T.forEach(enrich);
   setupFilters();showAsof();
   const b=$("live");b.className="live "+(mode==="live"?"on":mode==="warn"?"warn":"off");
-  b.textContent=mode==="live"?"Live · refreshes every 5 min":mode==="warn"?"Live · last refresh failed":"Data is out of date";
+  b.textContent=mode==="live"?"Live":mode==="warn"?"Live · last refresh failed":"Data is out of date";
   if(note!==undefined)banner(note);
   render();
 }
 function banner(html,btn){const el=$("banner");if(!html){el.hidden=true;el.innerHTML="";return}el.hidden=false;el.innerHTML="<span>"+html+"</span>";if(btn){const x=document.createElement("button");x.type="button";x.textContent=btn.label;x.onclick=btn.go;el.appendChild(x)}}
 load(SNAP,SNAP_ASOF,"live");
 
-/* Live data: a GitHub Action rebuilds data/*.js from the Nema helpdesk every 5 minutes; the page re-reads them every 5 minutes */
+/* Live data: the page re-reads data/*.js periodically */
 const EVERY=5*60e3,STALE=20*60e3;
 function getScript(src){return new Promise((ok,fail)=>{const el=document.createElement("script");el.src=src+"?t="+Date.now();el.onload=()=>{el.remove();ok()};el.onerror=()=>{el.remove();fail()};document.head.appendChild(el)})}
-function freshness(){if(Date.now()-ASOF>STALE){$("live").className="live warn";$("live").textContent="Live · data delayed";banner("The latest refresh is more than 20 minutes old. Showing the last successful update.")}}
+function freshness(){if(Date.now()-ASOF>STALE){$("live").className="live warn";$("live").textContent="Live · data delayed";banner("The latest data is delayed. Showing the last successful update.")}}
 async function reloadData(){
   try{await getScript("data/snap.js");
     load(window.SNAP||[],window.SNAP_ASOF||0,"live","");freshness();return true}
-  catch(_){$("live").className="live warn";$("live").textContent="Live · last refresh failed";banner("Couldn't load the latest data. Showing the last successful update; it will try again in 5 minutes.");return false}
+  catch(_){$("live").className="live warn";$("live").textContent="Live · last refresh failed";banner("Couldn't load the latest data. Showing the last successful update; it will try again shortly.");return false}
 }
 freshness();
 setInterval(reloadData,EVERY);

@@ -34,9 +34,10 @@ h1{margin:6px 0 4px;font-size:clamp(26px,4vw,38px);line-height:1.15}
 section{display:grid;gap:18px}
 .bar{margin:0;border-radius:14px;padding:12px 16px;text-align:center;color:#fff;font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:.01em}
 .over .bar{background:var(--bar-over)} .team .bar{background:var(--bar-team)} .aff .bar{background:var(--bar-aff)}
-.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:28px}
-.team .tiles{max-width:920px;margin-inline:auto}
-a.tile{flex:0 1 270px;min-width:0;display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:14px;overflow:hidden;color:inherit;text-decoration:none;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:40px 56px}
+.team .tiles{max-width:1020px;width:100%;margin-inline:auto}
+.over .tiles{max-width:1020px;width:100%;margin-inline:auto}
+a.tile{flex:0 1 300px;min-width:0;display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:14px;overflow:hidden;color:inherit;text-decoration:none;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}
 a.tile:hover,a.tile:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
 a.tile:focus-visible{outline:3px solid var(--c2);outline-offset:3px}
 .pic{position:relative;aspect-ratio:3/2;max-width:100%;background:linear-gradient(135deg,var(--c1),var(--c2));overflow:hidden;border-bottom:1px solid var(--line)}
@@ -46,6 +47,15 @@ a.tile:hover .pic svg,a.tile:hover .pic img{transform:scale(1.05)}
 .txt{display:grid;gap:6px;align-content:start;padding:18px 20px 22px}
 .txt b{font-size:22px;line-height:1.2;text-wrap:balance}
 .txt span{color:var(--muted);font-size:14px;line-height:1.45}
+/* Executive: one wide card, picture left and text right, lower than it is wide */
+a.tile.exec{flex:1 1 100%;grid-template-columns:minmax(0,46%) 1fr;grid-template-rows:auto}
+a.tile.exec .pic{aspect-ratio:auto;height:230px;border-bottom:0}
+a.tile.exec .txt{align-content:center;gap:10px;padding:28px 36px}
+a.tile.exec .txt b{font-size:clamp(26px,3vw,34px)}
+a.tile.exec .txt span{font-size:16px;max-width:38ch}
+a.tile.exec .txt em{font-style:normal;font-weight:700;font-size:14px;color:var(--c2);letter-spacing:.03em}
+a.tile.exec .txt em::after{content:" →"}
+@media (max-width:700px){a.tile.exec{grid-template-columns:1fr}a.tile.exec .pic{height:auto;aspect-ratio:3/2}a.tile.exec .txt{padding:18px 20px 22px}}
 .note{color:var(--muted);font-size:12px;margin:0;text-align:center}
 /* theme colours (deep → bright); --c2 doubles as the link colour */
 .exec{--c1:#262a86;--c2:#5a60e4} .erp{--c1:#07524a;--c2:#12a08d} .app{--c1:#46199a;--c2:#9658ef}
@@ -91,7 +101,7 @@ a.tile:hover .pic svg,a.tile:hover .pic img{transform:scale(1.05)}
         <g transform="translate(70 62)" fill="none" stroke-width="6" stroke-linecap="round"><path d="M-34 0A34 34 0 0 1 34 0" stroke="#fff" stroke-opacity=".25"/><path d="M-34 0A34 34 0 0 1 22 -26" stroke="#ffcb4f"/></g>
         <circle cx="70" cy="62" r="4" fill="#fff"/><path d="M70 62L88 44" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
       </svg></div>
-      <div class="txt"><b>Executive Report</b><span>All affiliates · closure rate, first-contact resolution and resolve time</span></div>
+      <div class="txt"><b>Executive Report</b><span>All affiliates · closure rate, first-contact resolution and resolve time</span><em>Open report</em></div>
     </a>
   </div>
 </section>

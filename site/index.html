@@ -76,15 +76,14 @@ a.tile.exec .txt em::after{content:" →"}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes glow{0%,100%{opacity:.35}50%{opacity:.95}}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* header photo slideshow */
-header{padding:44px 28px 40px;isolation:isolate}
-header .bgs{position:absolute;inset:0;z-index:-2}
-header .bgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:xfade 18s ease-in-out infinite}
-header .bgs img:nth-child(1){object-position:50% 62%}
-header .bgs img:nth-child(2){object-position:50% 30%;animation-delay:9s}
-header .veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(15,58,82,.93),rgba(24,90,125,.62) 55%,rgba(15,58,82,.88))}
+/* NEMA header: brand colours slowly shifting, logo floating */
+header{padding:32px 28px;isolation:isolate;background:linear-gradient(120deg,#1f4766,#2d5a7d,#5b84a0,#2d5a7d,#1f4766);background-size:320% 100%;animation:hgrad 16s ease-in-out infinite alternate}
 header::before,header::after{z-index:-1}
-@keyframes xfade{0%{opacity:0;transform:scale(1.04)}7%{opacity:1}50%{opacity:1}57%{opacity:0;transform:scale(1.14)}100%{opacity:0;transform:scale(1.14)}}
+@keyframes hgrad{from{background-position:0% 50%}to{background-position:100% 50%}}
+.hrow{display:flex;align-items:center;justify-content:center;gap:28px;text-align:left}
+.nema{height:118px;width:auto;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.32);animation:nfloat 5s ease-in-out infinite}
+@keyframes nfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media (max-width:600px){.hrow{gap:16px}.nema{height:82px}}
 h1{animation:rise .8s ease-out both}.eyebrow{animation:rise .8s .1s ease-out both}
 /* moving logo strip */
 .logos{overflow:hidden;padding:6px 0 10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
@@ -115,17 +114,17 @@ a.tile:hover .pic.logo img{transform:none;animation-duration:2.4s}
 .bar{animation:rise .6s ease-out both}
 a.tile{animation:rise .7s ease-out both}
 .tiles a.tile:nth-child(2){animation-delay:.08s}.tiles a.tile:nth-child(3){animation-delay:.16s}.tiles a.tile:nth-child(4){animation-delay:.24s}.tiles a.tile:nth-child(5){animation-delay:.32s}.tiles a.tile:nth-child(6){animation-delay:.4s}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}header .bgs img:first-child{opacity:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <div class="bgs" aria-hidden="true"><img src="img/adu.jpg" alt=""><img src="img/liwa.jpg" alt=""></div><div class="veil" aria-hidden="true"></div>
+  <div class="hrow"><img class="nema" src="img/nema.jpg" alt="NEMA Holding"><div class="htxt">
   <div class="eyebrow">NEMA Holding · Shared Services ITSM</div>
-  <h1>ITSM Reports</h1>
+  <h1>ITSM Reports</h1></div></div>
 </header>
-<div class="logos" aria-label="Affiliates and systems"><div class="track"><span class="chip full"><img src="img/liwa-logo.jpg" alt="Liwa University"></span><span class="chip"><img src="img/knowledge-group.jpg" alt="Knowledge Group"></span><span class="chip"><img src="img/arclight.jpg" alt="ArcLight Services"></span><span class="chip"><img src="img/peoplesoft.jpg" alt="Oracle PeopleSoft"></span><span class="chip full"><img src="img/salesforce.jpg" alt="Salesforce"></span><span class="chip full"><img src="img/blackboard.jpg" alt="Blackboard"></span><span aria-hidden="true" class="chip full"><img src="img/liwa-logo.jpg" alt="Liwa University"></span><span aria-hidden="true" class="chip"><img src="img/knowledge-group.jpg" alt="Knowledge Group"></span><span aria-hidden="true" class="chip"><img src="img/arclight.jpg" alt="ArcLight Services"></span><span aria-hidden="true" class="chip"><img src="img/peoplesoft.jpg" alt="Oracle PeopleSoft"></span><span aria-hidden="true" class="chip full"><img src="img/salesforce.jpg" alt="Salesforce"></span><span aria-hidden="true" class="chip full"><img src="img/blackboard.jpg" alt="Blackboard"></span></div></div>
+<div class="logos" aria-label="Affiliates and systems"><div class="track"><span class="chip full"><img src="img/nema.jpg" alt="NEMA Holding"></span><span class="chip full"><img src="img/liwa-logo.jpg" alt="Liwa University"></span><span class="chip"><img src="img/knowledge-group.jpg" alt="Knowledge Group"></span><span class="chip"><img src="img/arclight.jpg" alt="ArcLight Services"></span><span class="chip"><img src="img/peoplesoft.jpg" alt="Oracle PeopleSoft"></span><span class="chip full"><img src="img/salesforce.jpg" alt="Salesforce"></span><span class="chip full"><img src="img/blackboard.jpg" alt="Blackboard"></span></div></div>
 
 <section class="over" aria-label="Leadership Report">
   <h2 class="bar">Leadership Report</h2>
@@ -228,5 +227,27 @@ a.tile{animation:rise .7s ease-out both}
 
 <p class="note">Source: Nema helpdesk (ManageEngine MSP). Each report shows when its data was last updated.</p>
 </div>
+<script>
+/* Logo strip: moves right to left continuously; pauses while the pointer is over it */
+(function(){
+  var box=document.querySelector('.logos'),t=box&&box.querySelector('.track');if(!t)return;
+  var orig=[].slice.call(t.children),set=0,x=0,last=0,paused=false,SPEED=48;
+  t.style.animation='none';t.style.willChange='transform';
+  function fill(){
+    [].slice.call(t.querySelectorAll('.clone')).forEach(function(n){n.remove()});
+    set=t.scrollWidth;if(!set)return;
+    while(t.scrollWidth<box.clientWidth+2*set){orig.forEach(function(c){var k=c.cloneNode(true);k.classList.add('clone');k.setAttribute('aria-hidden','true');t.appendChild(k)})}
+    x=x%set;
+  }
+  function step(now){
+    if(last&&!paused&&set){x-=SPEED*Math.min(100,now-last)/1000;if(-x>=set)x+=set;t.style.transform='translate3d('+x+'px,0,0)'}
+    last=now;requestAnimationFrame(step);
+  }
+  box.addEventListener('mouseenter',function(){paused=true});box.addEventListener('mouseleave',function(){paused=false});
+  var imgs=[].slice.call(t.querySelectorAll('img')),left=imgs.length;
+  function go(){fill();requestAnimationFrame(step);window.addEventListener('resize',fill)}
+  imgs.forEach(function(i){if(i.complete){if(!--left)go()}else{i.addEventListener('load',function(){if(!--left)go()});i.addEventListener('error',function(){if(!--left)go()})}});
+})();
+</script>
 </body>
 </html>

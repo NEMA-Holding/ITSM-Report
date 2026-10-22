@@ -18,34 +18,32 @@ Publishes the four ITSM reports at https://itsmreport.adu.ac.ae so anyone with t
 | /lms | LMS Report (L2 LMS, all affiliates) |
 
 ## How it works
-Every 5 minutes GitHub reads all tickets and changes from the Nema helpdesk (ServiceDesk Plus) with its own read-only API key, splits them per report, and republishes the site. If the pull is incomplete nothing is published, so the totals always tally.
+Every 10 minutes GitHub reads the ticket and change lists from the Nema helpdesk (ServiceDesk Plus) through the Zoho MCP server, splits them per report, and republishes the site. If the pull is incomplete nothing is published, so the totals always tally.
+
+The MCP server has only two tools enabled (getListRequest, getListOfChanges), so attachments, resolutions, notes and conversations cannot be fetched. GitHub holds no Zoho API key, only the MCP server address.
+
+Ticket subjects, requester names and change titles are encrypted (AES-256-GCM, key from the REPORT_PASSWORD secret) and shown only after Log in.
 
 ## Contents
 | Item | Purpose |
 |---|---|
 | `site/index.html` | Landing page |
-| `site/<report>/index.html` | Each report page (same design as in Claude) |
-| `site/<report>/data/snap.js` | Each report's tickets, rebuilt every 5 minutes |
-| `site/erp/data/chg.js` | ERP change requests, rebuilt every 5 minutes |
-| `site/CNAME` | Site address: itsmreport.adu.ac.ae |
-| `scripts/fetch_sdp.py` | Reads all tickets and changes from the helpdesk API |
-| `scripts/build_reports.py` | Splits tickets per report; `REPORTS` at the top sets which tickets each report shows |
-| `.github/workflows/refresh.yml` | Runs every 5 minutes (and on every change) and publishes the site |
+| `site/<report>/index.html` | Each report page |
+| `site/<report>/data/` | Built on every run, never stored in the repository |
+| `site/lib/` | Download PDF and Log in code, and the PDF libraries (MIT) |
+| `site/img/` | Logos and photos |
+| `scripts/fetch_mcp.py` | Reads the ticket and change lists through the Zoho MCP server |
+| `scripts/build_reports.py` | Splits tickets per report and encrypts the details; `REPORTS` at the top sets which tickets each report shows |
+| `.github/workflows/refresh.yml` | Runs every 10 minutes (and on every change) and publishes the site |
 
-## Setup
-1. **Zoho API key** — api-console.zoho.com, read-only technician account → Add Client → Self Client.
-   Generate Code with scope `SDPOnDemand.requests.READ,SDPOnDemand.changes.READ`, duration 10 minutes, then within 10 minutes run:
-   `curl -X POST "https://accounts.zoho.com/oauth/v2/token" -d "code=CODE&client_id=ID&client_secret=SECRET&grant_type=authorization_code"`
-   and keep the `refresh_token`.
-2. **Repository** — create `itsm-report` on GitHub and upload this folder, including the hidden `.github` folder.
-3. **Secrets** — Settings → Secrets and variables → Actions:
-   `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`,
-   `ZOHO_ACCOUNTS_URL` (e.g. `https://accounts.zoho.com`),
-   `SDP_BASE_URL` (helpdesk address up to `/app/nemahelpdesk`).
-4. **Pages** — Settings → Pages → Source: GitHub Actions.
-5. **First run** — Actions → Refresh ITSM Reports → Run workflow.
-6. **Domain** — DNS: `CNAME itsmreport → <github-account>.github.io`; then Settings → Pages → Custom domain `itsmreport.adu.ac.ae` → Enforce HTTPS.
-7. **Check** — each report's total must match the helpdesk and tally with its breakdowns.
+## Secrets (Settings → Secrets and variables → Actions)
+| Secret | Purpose |
+|---|---|
+| `ZOHO_MCP_URL` | Zoho MCP server address (from the Zoho MCP console → Connect) |
+| `REPORT_PASSWORD` | Password for Log in on the detailed reports |
+
+## Check after every change
+Each report's total must match the helpdesk and tally with its breakdowns.
 
 ## Access
-Anyone with the link can open the site, and the detailed reports show requester names. For staff-only access, put Entra ID SSO or Cloudflare Access in front of the domain.
+Anyone with the link can open the summary figures; ticket details need Log in. For staff-only access, put Entra ID SSO or Cloudflare Access in front of the domain.

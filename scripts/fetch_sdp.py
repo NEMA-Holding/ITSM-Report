@@ -67,4 +67,6 @@ def pull(module, key, folder, extra):
 
 
 pull("requests", "requests", "req", {"fields_required": FIELDS})
-pull("changes", "changes", "chg", {})
+CHANGE_FIELDS = ["display_id", "title", "created_time", "status", "change_owner", "customer", "group", "change_type",
+                 "stage", "approval_status", "risk", "priority", "category", "subcategory", "completed_time"]
+pull("changes", "changes", "chg", {"fields_required": CHANGE_FIELDS})   # no descriptions or plans

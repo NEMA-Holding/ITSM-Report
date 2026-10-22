@@ -30,14 +30,25 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Pull tickets and changes from the Nema helpdesk
+      - name: Pull ticket and change lists from the Nema helpdesk
+        # Uses the Zoho MCP server when ZOHO_MCP_URL is set (only the enabled list tools; no attachment access).
+        # Falls back to the Zoho API key until then.
         env:
+          ZOHO_MCP_URL: ${{ secrets.ZOHO_MCP_URL }}
+          ZOHO_MCP_TOKEN: ${{ secrets.ZOHO_MCP_TOKEN }}
           ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
           ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
           ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
           ZOHO_ACCOUNTS_URL: ${{ secrets.ZOHO_ACCOUNTS_URL }}
           SDP_BASE_URL: ${{ secrets.SDP_BASE_URL }}
-        run: python3 scripts/fetch_sdp.py "$RUNNER_TEMP/pages"
+        run: |
+          if [ -n "$ZOHO_MCP_URL" ]; then
+            echo "Source: Zoho MCP server"
+            python3 scripts/fetch_mcp.py "$RUNNER_TEMP/pages"
+          else
+            echo "Source: Zoho API key (fallback)"
+            python3 scripts/fetch_sdp.py "$RUNNER_TEMP/pages"
+          fi
 
       - name: Build report data (stops if the pull was incomplete)
         env:

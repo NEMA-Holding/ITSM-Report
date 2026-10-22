@@ -191,6 +191,14 @@ header{padding-block:34px 30px}
 @media (max-width:1150px){a.tile{flex-basis:calc((100% - 2*24px)/3 - 1px)}}
 @media (max-width:820px){a.tile,.team a.tile{flex-basis:calc((100% - 24px)/2 - 1px)}}
 @media (max-width:540px){a.tile,.team a.tile{flex-basis:100%}.nema{height:76px}}
+
+/* team cards match the affiliate cards */
+.team .pic{aspect-ratio:2.1/1}
+.team .txt span,.aff .txt span{min-height:2.9em}
+.team a.tile{flex-basis:calc((100% - 3*24px)/4 - 1px)}
+@media (max-width:1150px){.team a.tile{flex-basis:calc((100% - 2*24px)/3 - 1px)}}
+@media (max-width:820px){.team a.tile{flex-basis:calc((100% - 24px)/2 - 1px)}}
+@media (max-width:540px){.team a.tile{flex-basis:100%}}
 </style>
 </head>
 <body>

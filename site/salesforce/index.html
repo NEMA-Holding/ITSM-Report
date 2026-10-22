@@ -1,4 +1,19 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* header images and logos */
+header{position:relative;overflow:hidden;isolation:isolate}
+header .hbg{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;animation:hkb 26s ease-in-out infinite alternate}
+header .hveil{position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(15,58,82,.94),rgba(24,90,125,.72) 60%,rgba(15,58,82,.9))}
+.htitle{display:flex;align-items:center;gap:16px;min-width:0}
+.hlogo{flex:none;position:relative;height:62px;padding:8px 12px;background:#fff;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:flex;align-items:center;overflow:hidden;animation:hfloat 5s ease-in-out infinite}
+.hlogo.full{padding:0}
+.hlogo img{height:100%;width:auto;display:block}
+.hlogo::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);transform:translateX(-130%);animation:hshine 6.5s ease-in-out infinite}
+@keyframes hkb{from{transform:scale(1.03)}to{transform:scale(1.15) translate(-2%,-2%)}}
+@keyframes hfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes hshine{0%,55%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@media (max-width:600px){.hlogo{height:46px;padding:6px 9px}.hlogo.full{padding:0}.htitle{flex-direction:column;align-items:flex-start;gap:10px}}
+@media (prefers-reduced-motion:reduce){header .hbg,.hlogo,.hlogo::after{animation:none}}
+</style></head><body>
 <title>Salesforce Report</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -96,10 +111,10 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
 
 <div class="wrap">
 <header>
-  <div>
+  <div class="htitle"><span class="hlogo full"><img src="../img/salesforce.jpg" alt="Salesforce"></span><div>
     <div class="eyebrow">Salesforce Team · Salesforce External · Salesforce Notification</div>
     <h1>Salesforce <span>Report</span></h1>
-  </div>
+  </div></div>
   <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
 </header>
 <div id="banner" class="banner" hidden></div>

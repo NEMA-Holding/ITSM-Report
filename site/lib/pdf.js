@@ -29,7 +29,7 @@
     try {
       var doc = new window.jspdf.jsPDF({ orientation: "landscape", unit: "pt", format: "a4", compress: true });
       var W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 26, FOOT = 22;
-      var y = M, bg = getComputedStyle(document.body).backgroundColor || "#ffffff";
+      var y = M, bg = "#ffffff";                                   // plain white behind every captured section
 
       function room(h) { if (y + h > H - M - FOOT) { doc.addPage(); y = M; } }
 

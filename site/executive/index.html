@@ -95,6 +95,34 @@ ul.pts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start
 .dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
 .note{font-size:12px;color:var(--muted);margin:0}
 .muted{color:var(--muted)} td span.good{color:var(--good)} td span.warn{color:var(--warn)} td span.bad{color:var(--bad)}
+
+/* page backdrop: soft NEMA-blue wash with light glows, fine dot pattern only in the side margins */
+html{min-height:100%;color-scheme:light;
+  --pg-a:#f7f9fc;--pg-b:#eaf0f5;--pg-glow1:rgba(91,132,160,.20);--pg-glow2:rgba(255,203,79,.13);--pg-glow3:rgba(31,71,102,.14);--pg-dot:rgba(31,71,102,.22);--pg-ring:rgba(45,90,125,.13);--pg-ring2:rgba(214,166,40,.20);--pg-side:rgba(91,132,160,.16);
+  background:
+    radial-gradient(520px 900px at 0% 55%,var(--pg-side),transparent 70%),
+    radial-gradient(520px 900px at 100% 45%,var(--pg-side),transparent 70%),
+    radial-gradient(1100px 620px at -5% -10%,var(--pg-glow1),transparent 62%),
+    radial-gradient(900px 520px at 105% 0%,var(--pg-glow2),transparent 60%),
+    radial-gradient(1200px 700px at 50% 115%,var(--pg-glow3),transparent 62%),
+    linear-gradient(180deg,var(--pg-a),var(--pg-b)) fixed;
+  background-attachment:fixed}
+@media (prefers-color-scheme:dark){html:not([data-theme="light"]){color-scheme:dark;
+  --pg-a:#0b1620;--pg-b:#08121a;--pg-glow1:rgba(91,132,160,.22);--pg-glow2:rgba(255,203,79,.07);--pg-glow3:rgba(45,90,125,.25);--pg-dot:rgba(255,255,255,.10);--pg-ring:rgba(127,179,207,.12);--pg-ring2:rgba(255,203,79,.12);--pg-side:rgba(91,132,160,.14)}}
+html[data-theme="dark"]{--pg-a:#0b1620;--pg-b:#08121a;--pg-glow1:rgba(91,132,160,.22);--pg-glow2:rgba(255,203,79,.07);--pg-glow3:rgba(45,90,125,.25);--pg-dot:rgba(255,255,255,.10);--pg-ring:rgba(127,179,207,.12);--pg-ring2:rgba(255,203,79,.12);--pg-side:rgba(91,132,160,.14)}
+body{background:transparent!important}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle at -6% 78%,transparent 300px,var(--pg-ring) 301px,var(--pg-ring) 303px,transparent 304px),
+    radial-gradient(circle at -6% 78%,transparent 380px,var(--pg-ring) 381px,var(--pg-ring) 382px,transparent 383px),
+    radial-gradient(circle at 106% 18%,transparent 260px,var(--pg-ring2) 261px,var(--pg-ring2) 263px,transparent 264px),
+    radial-gradient(circle at 106% 18%,transparent 340px,var(--pg-ring) 341px,var(--pg-ring) 342px,transparent 343px);
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 12%,transparent 24%,transparent 76%,#000 88%,#000 100%);
+          mask-image:linear-gradient(90deg,#000 0,#000 12%,transparent 24%,transparent 76%,#000 88%,#000 100%)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(var(--pg-dot) 1.1px,transparent 1.4px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%);
+          mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%)}
 </style>
 
 <div class="wrap">

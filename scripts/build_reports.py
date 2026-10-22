@@ -79,7 +79,7 @@ changes, _ = read("chg", "changes")
 
 asof = int(time.time() * 1000)
 dump = lambda v: json.dumps(v, ensure_ascii=False, separators=(",", ":"))
-PASSWORD = os.environ.get("REPORT_PASSWORD", "")
+PASSWORD = os.environ.get("REPORT_PASSWORD", "").strip()   # ignore stray spaces or line breaks
 ITERATIONS = 600000
 
 if PASSWORD:

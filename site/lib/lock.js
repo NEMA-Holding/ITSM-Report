@@ -60,7 +60,8 @@
   dlg.querySelector(".cancel").onclick = function () { dlg.close(); };
   form.addEventListener("submit", async function (e) {
     e.preventDefault(); err.textContent = ""; go.disabled = true; go.textContent = "Checking…";
-    try { await unlock(input.value); store(input.value); dlg.close(); input.value = ""; }
+    var pw = input.value.trim();
+    try { await unlock(pw); store(pw); dlg.close(); input.value = ""; }
     catch (x) { err.textContent = x && x.message === "nodata" ? "Ticket details are not available yet." : "Incorrect password."; input.select(); }
     go.disabled = false; go.textContent = "Log in";
   });

@@ -1,4 +1,16 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* action bar above the banner */
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:-6px}
+.toolbar .acts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.tbtn{width:auto;display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--accent);font:700 13px var(--sans);line-height:1.2;cursor:pointer;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:background .15s,box-shadow .15s}
+.tbtn:hover{background:var(--accent-soft);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tbtn:disabled{opacity:.75;cursor:default}
+.tbtn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.tbtn.primary:hover{filter:brightness(1.08)}
+#refresh::before{content:"\21BB";font-size:15px}#pdfBtn::before{content:"\2B07";font-size:13px}.home::before{content:"\2190"}
+@media (max-width:600px){.tbtn{padding:7px 12px;font-size:12px}.toolbar .acts{flex-basis:100%}}
+</style></head><body>
 <title>Executive Report</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -86,12 +98,13 @@ ul.pts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start
 </style>
 
 <div class="wrap">
+<nav class="toolbar pdf-skip" aria-label="Report actions"><a class="tbtn home" href="../">All reports</a><span class="acts"><button id="refresh" type="button" class="tbtn" hidden>Refresh now</button><button id="pdfBtn" type="button" class="tbtn primary" title="Download this report, with the current filters, as a PDF">Download PDF</button></span></nav>
 <header>
   <div>
     <div class="eyebrow">NEMA Shared IT Services · Nema helpdesk</div>
     <h1>Executive <span>Report</span></h1>
   </div>
-  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button> <button id="pdfBtn" type="button" class="mini" title="Download this report, with the current filters, as a PDF">⬇ Download PDF</button></div>
+  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span></div>
 </header>
 <div id="banner" class="banner" hidden></div>
 

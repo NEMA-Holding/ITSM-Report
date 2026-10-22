@@ -42,9 +42,10 @@
   document.body.classList.add("locked");
 
   // header button next to Download PDF
-  var hb = document.createElement("button"); hb.type = "button"; hb.className = "mini"; hb.id = "loginBtn";
   var anchor = $("pdfBtn") || $("refresh");
-  anchor.parentNode.insertBefore(hb, anchor.nextSibling); anchor.parentNode.insertBefore(document.createTextNode(" "), hb);
+  var hb = document.createElement("button"); hb.type = "button"; hb.id = "loginBtn";
+  hb.className = anchor.classList.contains("tbtn") ? "tbtn" : "mini";
+  anchor.parentNode.insertBefore(hb, anchor);                       // Log in sits just before Download PDF
   function label() { hb.textContent = DET ? "Log out" : "🔒 Log in"; hb.title = DET ? "Hide ticket details again" : "Log in to see ticket details"; }
   hb.onclick = function () { if (DET) logout(); else ask(); };
   label();

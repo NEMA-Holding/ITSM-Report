@@ -77,10 +77,10 @@ a.tile.exec .txt em::after{content:" →"}
 @keyframes glow{0%,100%{opacity:.35}50%{opacity:.95}}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* NEMA header: brand colours slowly shifting, logo floating */
-header{padding:32px 28px;isolation:isolate;background:linear-gradient(120deg,#1f4766,#2d5a7d,#5b84a0,#2d5a7d,#1f4766);background-size:320% 100%;animation:hgrad 16s ease-in-out infinite alternate}
+header{padding:28px 32px;isolation:isolate;text-align:left;background:linear-gradient(120deg,#1f4766,#2d5a7d,#5b84a0,#2d5a7d,#1f4766);background-size:320% 100%;animation:hgrad 16s ease-in-out infinite alternate}
 header::before,header::after{z-index:-1}
 @keyframes hgrad{from{background-position:0% 50%}to{background-position:100% 50%}}
-.hrow{display:flex;align-items:center;justify-content:center;gap:28px;text-align:left}
+.hrow{display:flex;align-items:center;justify-content:flex-start;gap:26px;text-align:left}
 .nema{height:118px;width:auto;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.32);animation:nfloat 5s ease-in-out infinite}
 @keyframes nfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media (max-width:600px){.hrow{gap:16px}.nema{height:82px}}

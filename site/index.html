@@ -206,6 +206,18 @@ header{padding-block:34px 30px}
 @media (max-width:1150px){.team .tiles{max-width:none}.team a.tile{flex-basis:calc((100% - 2*24px)/3 - 1px)}}
 @media (max-width:820px){.team a.tile{flex-basis:calc((100% - 24px)/2 - 1px)}}
 @media (max-width:540px){.team a.tile{flex-basis:100%}}
+
+/* more space between cards (cards stay equal in size) */
+:root{--gx:44px;--gy:38px}
+.tiles,.team .tiles,.over .tiles{gap:var(--gy) var(--gx)}
+a.tile{flex-basis:calc((100% - 3*var(--gx))/4 - 1px)}
+.team .tiles{max-width:calc((100% - 3*var(--gx))/4*3 + 2*var(--gx))}
+.team a.tile{flex-basis:calc((100% - 2*var(--gx))/3 - 1px)}
+section{gap:22px}
+.wrap{gap:34px}
+@media (max-width:1150px){:root{--gx:30px;--gy:28px}a.tile{flex-basis:calc((100% - 2*var(--gx))/3 - 1px)}.team .tiles{max-width:none}}
+@media (max-width:820px){:root{--gx:20px;--gy:20px}a.tile,.team a.tile{flex-basis:calc((100% - var(--gx))/2 - 1px)}}
+@media (max-width:540px){a.tile,.team a.tile{flex-basis:100%}}
 </style>
 </head>
 <body>

@@ -157,6 +157,20 @@ header{margin:-22px calc(50% - 50vw) 0;padding:46px max(32px,calc(50vw - 724px))
 .logos .track{padding-left:12px}
 .nema{height:128px}
 @media (max-width:600px){header{padding:30px 18px 28px}.nema{height:82px}}
+
+/* cards use the full content width, aligned with the section bars */
+.tiles,.team .tiles,.over .tiles{max-width:none;width:100%;margin-inline:0;gap:32px 28px}
+a.tile{flex:0 1 calc((100% - 3*28px)/4 - 1px)}
+.team a.tile{flex-basis:calc((100% - 2*28px)/3 - 1px)}
+.team .pic{aspect-ratio:16/9}
+a.tile.exec{flex:1 1 100%;grid-template-columns:minmax(0,44%) 1fr}
+a.tile.exec .pic{height:270px}
+a.tile.exec .txt{padding:32px 48px}
+.txt b{font-size:23px}
+@media (max-width:1150px){a.tile{flex-basis:calc((100% - 2*28px)/3 - 1px)}}
+@media (max-width:820px){a.tile,.team a.tile{flex-basis:calc((100% - 28px)/2 - 1px)}}
+@media (max-width:540px){a.tile,.team a.tile{flex-basis:100%}}
+@media (max-width:700px){a.tile.exec{grid-template-columns:1fr}a.tile.exec .pic{height:auto}a.tile.exec .txt{padding:18px 20px 22px}}
 </style>
 </head>
 <body>

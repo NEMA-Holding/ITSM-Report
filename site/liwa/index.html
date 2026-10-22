@@ -15,7 +15,7 @@ header .hveil{position:absolute;inset:0;z-index:-1;background:linear-gradient(12
 @media (prefers-reduced-motion:reduce){header .hbg,.hlogo,.hlogo::after{animation:none}}
 
 /* action bar above the banner */
-.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:-6px}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .toolbar .acts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
 .tbtn{width:auto;display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--accent);font:700 13px var(--sans);line-height:1.2;cursor:pointer;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:background .15s,box-shadow .15s}
 .tbtn:hover{background:var(--accent-soft);box-shadow:0 2px 8px rgba(0,0,0,.12)}
@@ -147,10 +147,19 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background-image:radial-gradient(var(--pg-dot) 1.1px,transparent 1.4px);background-size:22px 22px;
   -webkit-mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%);
           mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%)}
+
+/* full-width top bar and banner (content stays aligned with the report below) */
+body{overflow-x:clip}
+.toolbar{margin:-20px calc(50% - 50vw) 0;padding:10px max(16px,calc(50vw - 574px));background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(15,40,60,.06)}
+.toolbar .brand{display:flex;align-items:center;gap:14px;margin-right:auto}
+.toolbar .brand img{height:40px;width:auto;border-radius:6px;display:block}
+.toolbar .brand .home{margin-right:0}
+header{margin:-20px calc(50% - 50vw) 0;padding:30px max(22px,calc(50vw - 552px)) 26px;border-radius:0!important}
+@media (max-width:600px){.toolbar .brand img{height:32px}.toolbar .brand{gap:10px}}
 </style>
 
 <div class="wrap">
-<nav class="toolbar pdf-skip" aria-label="Report actions"><a class="tbtn home" href="../">All reports</a><span class="acts"><button id="refresh" type="button" class="tbtn" hidden>Refresh now</button><button id="pdfBtn" type="button" class="tbtn primary" title="Download this report, with the current filters, as a PDF">Download PDF</button></span></nav>
+<nav class="toolbar pdf-skip" aria-label="Report actions"><span class="brand"><a href="../" title="ITSM Reports home"><img src="../img/nema-wide.jpg" alt="NEMA Holding"></a><a class="tbtn home" href="../">All reports</a></span><span class="acts"><button id="refresh" type="button" class="tbtn" hidden>Refresh now</button><button id="pdfBtn" type="button" class="tbtn primary" title="Download this report, with the current filters, as a PDF">Download PDF</button></span></nav>
 <header>
   <img class="hbg" src="../img/liwa.jpg" alt="" aria-hidden="true" style="object-position:50% 30%"><div class="hveil" aria-hidden="true"></div>
   <div class="htitle"><span class="hlogo full"><img src="../img/liwa-logo.jpg" alt="Liwa University"></span><div>

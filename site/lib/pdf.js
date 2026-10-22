@@ -102,7 +102,9 @@
 
   var st = document.createElement("style");
   st.textContent = ".pdf-capture *,.pdf-capture *::before,.pdf-capture *::after{animation:none!important;transition:none!important;box-shadow:none!important}"
-    + ".pdf-capture button.kpi.on{outline:2px solid #185a7d;outline-offset:-2px}";
+    + ".pdf-capture button.kpi.on{outline:2px solid #185a7d;outline-offset:-2px}"
+    + ".pdf-capture header{margin:0!important;padding:20px 22px 18px!important;border-radius:8px!important}"
+    + ".pdf-capture header .hbg,.pdf-capture header .hveil{display:none!important}";
   document.head.appendChild(st);
 
   document.addEventListener("DOMContentLoaded", function () {

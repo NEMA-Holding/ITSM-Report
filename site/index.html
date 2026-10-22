@@ -148,6 +148,15 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background-image:radial-gradient(var(--pg-dot) 1.1px,transparent 1.4px);background-size:22px 22px;
   -webkit-mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%);
           mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 9%,transparent 19%,transparent 81%,rgba(0,0,0,.5) 91%,#000 100%)}
+
+/* full-width banner and logo band */
+body{overflow-x:clip}
+header{margin:-22px calc(50% - 50vw) 0;padding:46px max(32px,calc(50vw - 724px)) 42px;border-radius:0!important}
+.logos{margin:-34px calc(50% - 50vw) 0;padding:18px 0 20px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 6px 18px rgba(15,40,60,.06);
+  -webkit-mask-image:none;mask-image:none}
+.logos .track{padding-left:12px}
+.nema{height:128px}
+@media (max-width:600px){header{padding:30px 18px 28px}.nema{height:82px}}
 </style>
 </head>
 <body>

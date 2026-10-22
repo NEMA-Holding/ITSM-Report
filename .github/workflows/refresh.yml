@@ -2,7 +2,7 @@ name: Refresh ITSM Reports
 
 on:
   schedule:
-    - cron: "*/10 * * * *"     # every 10 minutes (runs can start a few minutes late)
+    - cron: "4-59/10 * * * *"   # every 10 minutes at :04, :14, :24 ... (off the busy round minutes)
   workflow_dispatch:           # "Run workflow" button for a manual refresh
   push:
     branches: [main]           # republish straight away when a report page is changed

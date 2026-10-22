@@ -2,7 +2,7 @@ name: Refresh ITSM Reports
 
 on:
   schedule:
-    - cron: "*/5 * * * *"     # every 5 minutes (GitHub's minimum; runs can start a few minutes late)
+    - cron: "*/10 * * * *"     # every 10 minutes (runs can start a few minutes late)
   workflow_dispatch:           # "Run workflow" button for a manual refresh
   push:
     branches: [main]           # republish straight away when a report page is changed

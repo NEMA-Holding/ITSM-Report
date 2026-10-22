@@ -1,0 +1,4 @@
+Libraries used by the Download PDF button (all MIT licence):
+html2canvas 1.4.1  https://github.com/niklasvh/html2canvas
+jsPDF 2.5.1        https://github.com/parallax/jsPDF
+jsPDF-AutoTable 3.8.2  https://github.com/simonbengtsson/jsPDF-AutoTable

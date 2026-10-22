@@ -91,7 +91,7 @@ ul.pts li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start
     <div class="eyebrow">NEMA Shared IT Services · Nema helpdesk</div>
     <h1>Executive <span>Report</span></h1>
   </div>
-  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
+  <div class="asof">Prepared for the CIO · Source: ManageEngine MSP<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button> <button id="pdfBtn" type="button" class="mini" title="Download this report, with the current filters, as a PDF">⬇ Download PDF</button></div>
 </header>
 <div id="banner" class="banner" hidden></div>
 
@@ -283,4 +283,5 @@ $("refresh").onclick=async()=>{const btn=$("refresh");if(btn.disabled)return;btn
   setTimeout(()=>{btn.disabled=false;btn.textContent="Refresh now"},3000)};
 </script>
 
+<script src="../lib/pdf.js"></script>
 </body></html>

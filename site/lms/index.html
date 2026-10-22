@@ -115,7 +115,7 @@ th.hw{white-space:normal;min-width:72px;max-width:96px}
     <div class="eyebrow">L2 LMS · All affiliates</div>
     <h1>LMS <span>Report</span></h1>
   </div></div>
-  <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button></div>
+  <div class="asof">Source: Nema helpdesk (ManageEngine MSP) · Requests module<br>Last updated <span id="asof"></span> (UAE)<br><span id="live" class="live on">Live</span> <button id="refresh" type="button" class="mini" hidden>Refresh now</button> <button id="pdfBtn" type="button" class="mini" title="Download this report, with the current filters, as a PDF">⬇ Download PDF</button></div>
 </header>
 <div id="banner" class="banner" hidden></div>
 
@@ -328,4 +328,5 @@ $("refresh").onclick=async()=>{const btn=$("refresh");if(btn.disabled)return;btn
   setTimeout(()=>{btn.disabled=false;btn.textContent="Refresh now"},3000)};
 </script>
 
+<script src="../lib/pdf.js"></script>
 </body></html>

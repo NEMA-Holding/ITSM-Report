@@ -12,14 +12,13 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: refresh
-  cancel-in-progress: false
-
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    concurrency:                 # one refresh at a time; a waiting one runs next
+      group: refresh
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -54,3 +53,24 @@ jobs:
       - name: Publish to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
+
+  # GitHub's timer often skips scheduled runs, so each run starts the next one itself about 10 minutes later.
+  # Only the newest waiting "next" job survives (cancel-in-progress), so there is never more than one chain;
+  # the timer above restarts the chain if it ever stops.
+  next:
+    needs: refresh
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: write
+    concurrency:
+      group: refresh-next
+      cancel-in-progress: true
+    steps:
+      - name: Wait, then start the next refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 530
+          gh workflow run refresh.yml --repo "$GITHUB_REPOSITORY" --ref main

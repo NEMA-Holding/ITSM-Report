@@ -105,9 +105,20 @@ def write_detail(folder, secret):
 # ERP change requests: categories starting with "ERP"
 erp_chg = sorted((change(c) for c in changes if name(c.get("category")).upper().startswith("ERP")), key=lambda r: int(r[0]))
 
+home = {}                                                        # high-level figures for the homepage cards
+
+
+def figures(rows, status_at):
+    st = [("Cancelled" if r[status_at] == "Canceled" else r[status_at]) for r in rows]
+    t = len(st); done = st.count("Closed") + st.count("Resolved")
+    return {"t": t, "o": st.count("Open"), "h": st.count("On Hold"), "d": done, "x": st.count("Cancelled"),
+            "rate": round(done / t * 100, 1) if t else None}
+
+
 for folder, keep, fmt in REPORTS:
     rows = [(detail if fmt == "detail" else summary)(q) for q in tickets
             if keep(name(q.get("group")), name(q.get("customer")))]
+    home[folder] = figures(rows, 3 if fmt == "detail" else 2)
     path = os.path.join(site, folder, "data", "snap.js")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if fmt == "detail":
@@ -121,4 +132,8 @@ for folder, keep, fmt in REPORTS:
     open(path, "w", encoding="utf8").write("window.SNAP_ASOF=%d;\nwindow.SNAP=%s;\n" % (asof, dump(rows)))
     print(folder, len(rows), "tickets")
 
+home["erp"]["chg"] = len(erp_chg)
+os.makedirs(os.path.join(site, "data"), exist_ok=True)
+open(os.path.join(site, "data", "home.js"), "w", encoding="utf8").write(
+    "window.HOME_ASOF=%d;\nwindow.HOME=%s;\n" % (asof, dump(home)))
 print("erp", len(erp_chg), "changes;", len(tickets), "tickets in total")

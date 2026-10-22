@@ -40,7 +40,11 @@ jobs:
         run: python3 scripts/fetch_sdp.py "$RUNNER_TEMP/pages"
 
       - name: Build report data (stops if the pull was incomplete)
-        run: python3 scripts/build_reports.py "$RUNNER_TEMP/pages" site
+        env:
+          REPORT_PASSWORD: ${{ secrets.REPORT_PASSWORD }}
+        run: |
+          pip install --quiet cryptography
+          python3 scripts/build_reports.py "$RUNNER_TEMP/pages" site
 
       - uses: actions/configure-pages@v5
 

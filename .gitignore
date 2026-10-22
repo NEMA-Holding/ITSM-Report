@@ -1,0 +1,2 @@
+# Report data is built by the workflow on every run and never stored in the repository
+site/*/data/

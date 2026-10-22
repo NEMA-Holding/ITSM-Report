@@ -4,8 +4,13 @@ usage: python3 build_reports.py PAGES_DIR SITE_DIR
 To add a report or change which tickets a report shows, edit REPORTS below.
 Stops without writing anything if fewer tickets arrived than the helpdesk total,
 so a partial pull never goes live.
+
+Ticket subjects, requester names and change titles are NOT written to the public data files.
+They go into data/detail.json, encrypted with AES-256-GCM under a key derived from the
+REPORT_PASSWORD secret (PBKDF2-SHA256). The report pages decrypt it in the browser after
+"Log in". Without REPORT_PASSWORD no detail file is written, so the details stay unpublished.
 """
-import glob, json, os, sys, time
+import base64, glob, json, os, sys, time
 
 pages_dir, site = sys.argv[1], sys.argv[2]
 
@@ -74,15 +79,46 @@ changes, _ = read("chg", "changes")
 
 asof = int(time.time() * 1000)
 dump = lambda v: json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+PASSWORD = os.environ.get("REPORT_PASSWORD", "")
+ITERATIONS = 600000
+
+if PASSWORD:
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+else:
+    print("REPORT_PASSWORD not set: ticket details are not published")
+
+
+def write_detail(folder, secret):
+    path = os.path.join(site, folder, "data", "detail.json")
+    if not PASSWORD:
+        if os.path.exists(path): os.remove(path)
+        return
+    salt, iv = os.urandom(16), os.urandom(12)
+    key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=ITERATIONS).derive(PASSWORD.encode("utf8"))
+    ct = AESGCM(key).encrypt(iv, dump(secret).encode("utf8"), None)
+    b64 = lambda b: base64.b64encode(b).decode("ascii")
+    json.dump({"v": 1, "kdf": "PBKDF2-SHA256", "iter": ITERATIONS, "salt": b64(salt), "iv": b64(iv), "ct": b64(ct)}, open(path, "w"))
+
+
+# ERP change requests: categories starting with "ERP"
+erp_chg = sorted((change(c) for c in changes if name(c.get("category")).upper().startswith("ERP")), key=lambda r: int(r[0]))
+
 for folder, keep, fmt in REPORTS:
     rows = [(detail if fmt == "detail" else summary)(q) for q in tickets
             if keep(name(q.get("group")), name(q.get("customer")))]
     path = os.path.join(site, folder, "data", "snap.js")
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    if fmt == "detail":
+        secret = {"t": {r[0]: [r[1], r[7]] for r in rows}}
+        for r in rows: r[1], r[7] = "", ""                       # subject and requester only in the encrypted file
+        if folder == "erp":
+            secret["c"] = {r[0]: r[1] for r in erp_chg}
+            public_chg = [[r[0], ""] + r[2:] for r in erp_chg]     # change title only in the encrypted file
+            open(os.path.join(site, "erp", "data", "chg.js"), "w", encoding="utf8").write("window.CHG=%s;\n" % dump(public_chg))
+        write_detail(folder, secret)
     open(path, "w", encoding="utf8").write("window.SNAP_ASOF=%d;\nwindow.SNAP=%s;\n" % (asof, dump(rows)))
     print(folder, len(rows), "tickets")
 
-# ERP change requests: categories starting with "ERP"
-erp_chg = sorted((change(c) for c in changes if name(c.get("category")).upper().startswith("ERP")), key=lambda r: int(r[0]))
-open(os.path.join(site, "erp", "data", "chg.js"), "w", encoding="utf8").write("window.CHG=%s;\n" % dump(erp_chg))
 print("erp", len(erp_chg), "changes;", len(tickets), "tickets in total")
